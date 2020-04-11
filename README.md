@@ -5,4 +5,4 @@ quality of software development.
 
 ## Strategies
 
-1 *No Pairing* this is the control group. We hope to show that this is a bad strategy :-)
+1 _No Pairing_ this is the control group. We hope to show that this is a bad strategy :-)
