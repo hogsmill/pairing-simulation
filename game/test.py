@@ -140,6 +140,20 @@ class TestBoard(unittest.TestCase):
     self.assertEqual(len(board.team.team), team_length - 1)
     self.assertEqual(len(test_card['assigned']), assigned_length + 1)
 
+  def test_unassign_members_from_card(self):
+    board = create_board()
+    card = c.Card()
+    test_card = {'id': 1, 'name': '1', 'skill': 'java', 'level': 10}
+    card.prepare_card(test_card)
+    team_length = len(board.team.team)
+    test_card['assigned'] = board.team.team
+    board.team.team = []
+
+    board.unassign_members_from_card(test_card)
+
+    self.assertEqual(len(board.team.team), team_length)
+    self.assertEqual(len(test_card['assigned']), 0)
+
 class TestTeam(unittest.TestCase):
 
   def test_team(self):

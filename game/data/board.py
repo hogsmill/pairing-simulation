@@ -45,7 +45,7 @@ class Board:
       card['assigned'].append(member)
 
     def unassign_members_from_card(self, card):
-      for member in card[assigned]:
+      for member in card['assigned']:
         self.team.team.append(member)
       card['assigned'] = []
 
@@ -66,3 +66,4 @@ class Board:
             self.card.complete_work_on_card(card, skill['level'])
       if (self.card.card_is_complete(card)):
         self.move_card(card, 'doing', 'done')
+        self.unassign_members_from_card(card)
