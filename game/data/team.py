@@ -12,12 +12,7 @@ class Team:
       {'name': 'DBA', 'skills': roles.get_role('dba')['skills']}
     ]
 
-  def add_available_members(self, card, board):
-    for member in self.team:
-      unassigned = True
-      for card_in_play in board.cards['doing']:
-        for assigned in card_in_play['assigned']:
-          if (member['name'] == assigned['name']):
-            unassigned = False
-      if (unassigned):
-        card['available'].append(member)
+  def get_member_skill(self, member, skill):
+    for member_skill in member['skills']:
+      if (member_skill['name'] == skill):
+        return member_skill

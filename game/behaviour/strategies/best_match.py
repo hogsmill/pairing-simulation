@@ -1,22 +1,25 @@
 
 class BestMatch():
 
-  def assign(self, card, board, swap):
-    print("BEST MATCH, PAIRING IS {}".format(board.pairing))
-    self.do_assign(card, board, swap)
-    if (board.pairing):
-      self.do_assign(card, board, swap)
+  def assign(self, card, board):
+    while (len(board.team.team) > 0 and not board.card_is_assigned(card)):
+      self.find_best_match(card, board)
 
-  def do_assign(self, card, board, swap):
-    match = 0
-    assigned = False
-    for member in card['available']:
-      for member_skill in member['skills']:
-        if (member_skill['name'] == card['skill']):
-          if (member_skill['level'] > match):
-            assigned = member
-    if (not assigned and len(card['available']) > 0):
-      assigned = card['available'][0]
-    if (assigned):
-      card['assigned'].append(assigned)
-      card['available'].remove(assigned)
+  def find_best_match(self, card, board):
+    best_match = False
+    best_match_skill = False
+    for member in board.team.team:
+      skill = board.team.get_member_skill(member, card['skill'])
+      if (skill):
+        if (not best_match):
+          best_match = member
+          best_match_skill = skill
+        else:
+          if (skill['level'] > best_match_skill['level']):
+            best_match = member
+            best_match_skill = skill
+    if (not best_match):
+      best_match = board.team.team[0]
+    if (best_match):
+      board.team.team.remove(best_match)
+      card['assigned'].append(best_match)

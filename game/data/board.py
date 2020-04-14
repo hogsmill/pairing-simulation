@@ -1,7 +1,11 @@
 
+from data import card as c
+
 class Board:
 
     def __init__(self, team):
+
+      self.card = c.Card()
 
       self.team = team
       self.cards = {
@@ -23,50 +27,42 @@ class Board:
       'done': []
     }
 
+    def prepare_board(self, board):
+      for card in board.cards['to do']:
+        self.card.prepare_card(card)
+
     def board_complete(self):
       return len(self.cards['to do']) == 0 and len(self.cards['doing']) == 0
+
+    def card_is_assigned(self, card):
+      return len(card['assigned']) == self.number_to_assign()
+
+    def number_to_assign(self):
+      return 1 if self.strategy == 'No Pairing' else 2
+
+    def assign_member_to_card(self, card, member):
+      self.team.team.remove(member)
+      card['assigned'].append(member)
+
+    def unassign_members_from_card(self, card):
+      for member in card[assigned]:
+        self.team.team.append(member)
+      card['assigned'] = []
 
     def move_card(self, card, from_queue, to_queue):
       self.cards[to_queue].append(card)
       self.cards[from_queue].remove(card)
 
-    def card_is_complete(self, card):
-      return card['completed'] >= card['level']
+    def calculate_work_done_on_cards(self, board):
+      for card in board.cards['doing']:
+        self.calculate_work_done_on_card(card)
 
-    def prepare_card(self, card):
-      card['assigned'] = []
-      card['remaining'] = []
-      card['available'] = []
-      card['completed'] = 0
-
-    def match_members_to_cards(self, board):
-      #for card in board.cards['doing']:
-      #  self.check_members_on_card(card, team)
-      for card in board.cards['to do']:
-        self.prepare_card(card)
-        self.team.add_available_members(card, board)
-
-# =================== Orig ================
-
-    def work_on_card(self, card):
-      print("Working on Id:{}".format(card['id']))
-      self.get_card_team_members(card)
-      self.calculate_work_on_card(card)
-
-    def get_card_team_members(self, card):
-      pass
-
-    def calculate_work_on_card(self, card):
-      pass
-
-    def skill_is_complete(self, skill, dones):
-      if (len(dones) == 0):
-        return False
-      complete = True
-      for done in dones:
-        if (skill['skill'] == done['skill']):
-          if (done['done'] < skill['level']):
-            print("Not complete: {}:{} is less than {}:{}".format(
-              done['skill'], done['done'], skill['skill'], skill['level']))
-            complete = False
-      return complete
+    def calculate_work_done_on_card(self, card):
+      print("      Working on card Id:'{}', required: {}:{}".format(card['id'], card['skill'], card['level']))
+      done = 0
+      for assigned in card['assigned']:
+        for skill in assigned['skills']:
+          if (skill['name'] == card['skill']):
+            self.card.complete_work_on_card(card, skill['level'])
+      if (self.card.card_is_complete(card)):
+        self.move_card(card, 'doing', 'done')
