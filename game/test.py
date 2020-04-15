@@ -4,6 +4,7 @@ import unittest
 
 from data import roles as r, board as b, team as t, card as c
 from behaviour import flow as f, strategies as s
+from utils.list import remove_from_list
 
 def create_board():
   roles = r.Roles()
@@ -186,6 +187,24 @@ class TestTeam(unittest.TestCase):
 class TestFlow(unittest.TestCase):
 
   pass
+
+class TestList(unittest.TestCase):
+
+  def test_remove_from_list(self):
+    list = [
+      {'id': 1, 'name': 'One'},
+      {'id': 2, 'name': 'Two'},
+      {'id': 3, 'name': 'Three'}
+    ]
+    new_list = [list[0], list[2]]
+
+    list = remove_from_list(list, 'id', 99)
+    self.assertEqual(len(list), 3)
+    self.assertEqual(list, list)
+
+    list = remove_from_list(list, 'id', 2)
+    self.assertEqual(len(list), 2)
+    self.assertEqual(list, new_list)
 
 if __name__ == '__main__':
     unittest.main()
