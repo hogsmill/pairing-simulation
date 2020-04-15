@@ -25,7 +25,7 @@ class Flow:
     print_status("  Running {}, Pairing is {}".format(board.strategy, board.pairing))
     board.cycles = 0
     board.prepare_board(board)
-    while(not board.board_complete() and board.cycles < 3):
+    while(not board.board_complete() and board.cycles < 5):
       print_status("    Cycle {}".format(board.cycles))
       print_queues('Start', board)
 

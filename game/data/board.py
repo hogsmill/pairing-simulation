@@ -1,5 +1,6 @@
 
 from data import card as c
+from utils.list import remove_from_list
 
 class Board:
 
@@ -49,16 +50,16 @@ class Board:
         self.team.team.append(member)
       card['assigned'] = []
 
-    def move_card(self, card, from_queue, to_queue):
-      self.cards[to_queue].append(card)
-      self.cards[from_queue].remove(card)
+    def move_card(self, move_card, from_queue, to_queue):
+      self.cards[to_queue].append(move_card)
+      self.cards[from_queue] = remove_from_list(self.cards[from_queue], 'id', move_card['id'])
 
     def calculate_work_done_on_cards(self, board):
       for card in board.cards['doing']:
         self.calculate_work_done_on_card(card)
 
     def calculate_work_done_on_card(self, card):
-      print("      Working on card Id:'{}', required: {}:{}".format(card['id'], card['skill'], card['level']))
+      print("        Working on card Id:'{}', required: {}:{}/{}".format(card['id'], card['skill'], card['completed'], card['level']))
       done = 0
       for assigned in card['assigned']:
         for skill in assigned['skills']:

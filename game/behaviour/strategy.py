@@ -21,10 +21,8 @@ class Strategies:
 
   def assign_cards_based_on_strategy(self, board):
     for card in board.cards['doing']:
-      print('  DOING')
       self.assign_card_based_on_strategy(card, board)
     for card in board.cards['to do']:
-      print('  TO DO')
       self.assign_card_based_on_strategy(card, board)
       if (len(card['assigned']) > 0):
         board.move_card(card, 'to do', 'doing')

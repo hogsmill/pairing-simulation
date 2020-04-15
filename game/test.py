@@ -154,6 +154,17 @@ class TestBoard(unittest.TestCase):
     self.assertEqual(len(board.team.team), team_length)
     self.assertEqual(len(test_card['assigned']), 0)
 
+  def test_move_card(self):
+    board = create_board()
+    card = board.cards['to do'][0]
+
+    todo = len(board.cards['to do'])
+    doing = len(board.cards['doing'])
+
+    board.move_card(card, 'to do', 'doing')
+    self.assertEqual(len(board.cards['to do']), todo - 1)
+    self.assertEqual(len(board.cards['doing']), doing + 1)
+
 class TestTeam(unittest.TestCase):
 
   def test_team(self):

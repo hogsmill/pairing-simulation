@@ -11,7 +11,8 @@ def print_queues(when, board):
   todo = queue_string(board, 'to do')
   doing = queue_string(board, 'doing')
   done = queue_string(board, 'done')
-  print("      {} - to do: [{}], doing: [{}], done: [{}]".format(when, todo, doing, done))
+  free = len(board.team.team)
+  print("      {} - to do: [{}], doing: [{}], done: [{}], free: {}".format(when, todo, doing, done, free))
 
 def queue_string(board, type):
   items = []

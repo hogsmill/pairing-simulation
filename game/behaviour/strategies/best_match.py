@@ -21,5 +21,9 @@ class BestMatch():
     if (not best_match):
       best_match = board.team.team[0]
     if (best_match):
-      board.team.team.remove(best_match)
       card['assigned'].append(best_match)
+      team = []
+      for member in board.team.team:
+        if (member['name'] != best_match['name']):
+          team.append(member)
+      board.team.team = team
