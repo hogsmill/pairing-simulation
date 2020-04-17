@@ -37,16 +37,6 @@ class Team:
     else:
       self.add_default_level(card)
 
-    #added = False
-    #i = 0
-    #while (not added and i < len(member['skills'])):
-    #  if (member['skills'][i]['name'] == card['skill']):
-    #    member['skills'][i]['level'] = min(self.expert_level, member['skills'][i]['level'] + self.share)
-    #    added = True
-    #  i = i + 1
-    #if (not added):
-    #  member['skills'].append({'name': card['skill'], 'level': self.share})
-
   def find_most_expert_on_card(self, card):
     expert = False
     level = 0
