@@ -4,16 +4,14 @@ from random import randint
 
 class RandomMatch:
 
-  def assign(self, card, board, swap):
-    print("RANDOM, PAIRING IS {}".format(board.pairing))
-    self.do_assign(card, board, swap)
-    if (board.pairing):
-      self.do_assign(card, board, swap)
+  def assign(self, card, board):
+    if (not board.card_is_assigned(card)):
+      self.do_assign(card, board)
+      self.do_assign(card, board)
 
-  def do_assign(self, card, board, swap):
+  def do_assign(self, card, board):
     assigned = False
-    if (len(card['available']) > 0):
-      assigned = card['available'][randint(0, len(card['available']) - 1)]
+    if (len(board.team.team) > 0):
+      assigned = board.team.team[randint(0, len(board.team.team) - 1)]
     if (assigned):
-      card['assigned'].append(assigned)
-      card['available'].remove(assigned)
+      board.assign_member_to_card(card, assigned)

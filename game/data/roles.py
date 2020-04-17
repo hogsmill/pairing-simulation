@@ -6,27 +6,27 @@ class Roles:
       {
         'name': 'front end',
         'skills': [
-          {'name': 'javascript', 'level': 10},
-          {'name': 'css', 'level': 10}
+          {'name': 'javascript', 'level': 30},
+          {'name': 'css', 'level': 30}
         ]
       },
       {
         'name': 'back end',
         'skills': [
-          {'name': 'java', 'level': 10}
+          {'name': 'java', 'level': 30}
          ]
       },
       {
         'name': 'devops',
         'skills': [
-          {'name': 'jenkins', 'level': 10}
+          {'name': 'jenkins', 'level': 30}
          ]
       },
       {
         'name': 'dba',
         'skills': [
-          {'name': 'sql', 'level': 10},
-          {'name': 'mongo', 'level': 10}
+          {'name': 'sql', 'level': 30},
+          {'name': 'mongo', 'level': 30}
          ]
       }
     ]

@@ -1,13 +1,14 @@
 
 from data import card as c
 from utils.list import remove_from_list
+from utils.io import print_working_on_card
 
 class Board:
 
-    def __init__(self, team):
+    def __init__(self, team, cycles = 50):
 
+      self.max_cycles = cycles
       self.card = c.Card()
-
       self.team = team
       self.cards = {
         'to do': [
@@ -42,8 +43,8 @@ class Board:
       return 1 if self.strategy == 'No Pairing' else 2
 
     def assign_member_to_card(self, card, member):
-      self.team.team.remove(member)
       card['assigned'].append(member)
+      self.team.team = remove_from_list(self.team.team, 'name', member['name'])
 
     def unassign_members_from_card(self, card):
       for member in card['assigned']:
@@ -59,12 +60,16 @@ class Board:
         self.calculate_work_done_on_card(card)
 
     def calculate_work_done_on_card(self, card):
-      print("        Working on card Id:'{}', required: {}:{}/{}".format(card['id'], card['skill'], card['completed'], card['level']))
+      print_working_on_card(card)
       done = 0
       for assigned in card['assigned']:
         for skill in assigned['skills']:
           if (skill['name'] == card['skill']):
             self.card.complete_work_on_card(card, skill['level'])
+          self.calculate_knowledge_share(card, assigned)
       if (self.card.card_is_complete(card)):
         self.move_card(card, 'doing', 'done')
         self.unassign_members_from_card(card)
+
+    def calculate_knowledge_share(self, card, member):
+      self.team.add_member_knowledge(member, card)

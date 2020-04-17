@@ -18,12 +18,7 @@ class BestMatch():
           if (skill['level'] > best_match_skill['level']):
             best_match = member
             best_match_skill = skill
-    if (not best_match):
+    if (not best_match and len(board.team.team) > 0):
       best_match = board.team.team[0]
     if (best_match):
-      card['assigned'].append(best_match)
-      team = []
-      for member in board.team.team:
-        if (member['name'] != best_match['name']):
-          team.append(member)
-      board.team.team = team
+      board.assign_member_to_card(card, best_match)

@@ -1,10 +1,9 @@
 
-class BestShare:
+class NoPairing:
 
   def assign(self, card, board):
     if (not board.card_is_assigned(card)):
       self.find_best_match(card, board)
-      self.find_worst_match(card, board)
 
   def find_best_match(self, card, board):
     best_match = False
@@ -23,17 +22,3 @@ class BestShare:
       best_match = board.team.team[0]
     if (best_match):
       board.assign_member_to_card(card, best_match)
-
-  def find_worst_match(self, card, board):
-    worst_match = False
-    i = 0
-    while (not worst_match and i < len(board.team.team) and len(board.team.team) > 0):
-      skill = board.team.get_member_skill(board.team.team[i], card['skill'])
-      not_skill = board.team.get_member_not_skill(board.team.team[i], card['skill'])
-      if (not_skill and not skill):
-        worst_match = board.team.team[i]
-      i = i + 1
-    if (not worst_match and len(board.team.team) > 0):
-      worst_match = board.team.team[0]
-    if (worst_match):
-      board.assign_member_to_card(card, worst_match)

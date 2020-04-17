@@ -22,3 +22,22 @@ strategies:
 (Swapping not yet implemented)
 
 ## How it works
+
+We have a simple Kanban board - To Do, Doing, Done.
+
+We have a set of cards that we want to move from To Do to Done. Each card has a
+set of skills needed, and a level of those skills, e.g. JavaScript: 100 or SQL: 50
+
+We have a team - a set of members who each have a set of skills, e.g. JavaScript: 10
+and CSS: 20. Every time a team member works on a card, they increase their level of the
+skills on the card, up to a maximum "expert" level. As an example, working on a
+JavaScript card would raise JavaScript: 10 to JavaScript: 20
+
+Team members use their skills to work on a card. They complete the amount of work
+on the card of the skill they have. As an example, if the card had JavaScript: 50,
+and the member had JavaScript: 20, after they had worked on the card, there would
+be 30 JavaScript left.
+
+Work is done in cycles:
+1. Members are assigned to as many cards as possible, e.g. 2 on each if pairing. Once  card has members assigned, it is moved to Doing
+1. 

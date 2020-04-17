@@ -10,6 +10,10 @@ team = t.Team(roles)
 board = b.Board(team)
 strategies = s.Strategies()
 
-flow = f.Flow(board, strategies)
+strategy = False
+if (len(sys.argv) > 1):
+  strategy = sys.argv[1]
+
+flow = f.Flow(board, strategies, strategy)
 
 flow.run()
