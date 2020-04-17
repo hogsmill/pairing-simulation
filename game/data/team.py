@@ -1,11 +1,11 @@
 
 class Team:
 
-  def __init__(self, roles, expert_level = 100, expert_level_percentage = 10, share = 1):
+  def __init__(self, roles, expert_level = 100, expert_level_percentage = 10, default_share = 1):
 
     self.expert_level = expert_level
     self.expert_level_percentage = expert_level_percentage
-    self.default_share = share
+    self.default_share = default_share
     self.team = [
       {'name': 'FE 1', 'skills': roles.get_role('front end')['skills']},
       {'name': 'FE 2', 'skills': roles.get_role('front end')['skills']},
@@ -25,7 +25,7 @@ class Team:
       if (member_skill['name'] != skill):
         return member_skill
 
-  def add_member_knowledge(self, member, card):
+  def add_member_knowledge(self, card):
     # Rules:
     #   1) If there is somebody on the card with the needed skill, everybody
     #      gets 10% of the skill level of the highest expert

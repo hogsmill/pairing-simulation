@@ -172,8 +172,14 @@ class TestTeam(unittest.TestCase):
 
     # TODO: Define roles in here to pass in to t.Team
     roles = r.Roles()
-    team = t.Team(roles)
+    expert_level = 50
+    expert_level_percentage = 5
+    default_share = 2
+    team = t.Team(roles, expert_level, expert_level_percentage, default_share)
 
+    self.assertEqual(team.expert_level, expert_level)
+    self.assertEqual(team.expert_level_percentage, expert_level_percentage)
+    self.assertEqual(team.default_share, default_share)
     self.assertEqual(len(team.team), 6)
 
   def test_get_member_skill(self):
@@ -183,6 +189,100 @@ class TestTeam(unittest.TestCase):
     member = {'name': 'FE', 'skills': [{'name': 'sql', 'level': 10}, skill]}
 
     self.assertEqual(team.get_member_skill(member, 'java'), skill)
+
+  def test_get_member_not_skill(self):
+    roles = r.Roles()
+    team = t.Team(roles)
+    skill = {'name': 'java', 'level': 10}
+    not_skill = {'name': 'sql', 'level': 10}
+    member = {'name': 'FE', 'skills': [not_skill, skill]}
+
+    self.assertEqual(team.get_member_not_skill(member, 'java'), not_skill)
+
+  def test_add_share(self):
+    roles = r.Roles()
+    team = t.Team(roles)
+
+    card_skill = 'javascript'
+    skills = [{'name': 'javascript', 'level': 10}, {'name': 'css', 'level': 20}]
+    member = {'name': 'FE 1', 'skills': skills}
+
+    new_skills = [{'name': 'javascript', 'level': 10}, {'name': 'css', 'level': 25}]
+
+    team.add_share(member, 'css', 5)
+    self.assertEqual(member['skills'], new_skills)
+
+    new_skills.append({'name': 'java', 'level': 10})
+
+    team.add_share(member, 'java', 10)
+    self.assertEqual(member['skills'], new_skills)
+
+  def test_find_most_expert_on_card(self):
+    roles = r.Roles()
+    team = t.Team(roles)
+
+    expert = {'name': 'expert', 'skills':[{'name': 'java', 'level': 48}]}
+    member = {'skills':[]}
+
+    card = {'skill':'java', 'level': 10, 'assigned': [member, expert]}
+
+    expert = team.find_most_expert_on_card(card)
+    self.assertEqual(expert['name'], 'expert')
+
+  def test_add_default_level(self):
+    roles = r.Roles()
+    team = t.Team(roles)
+    team.default_share = 1
+
+    member1 = {'skills':[]}
+    member2 = {'skills':[]}
+    card = {'skill':'java', 'level': 10, 'assigned': [member1, member2]}
+
+    team.add_default_level(card)
+    self.assertEqual(member1['skills'], [{'name': 'java', 'level': 1}])
+    self.assertEqual(member2['skills'], [{'name': 'java', 'level': 1}])
+
+  def test_add_expert_level(self):
+    roles = r.Roles()
+    team = t.Team(roles)
+    team.expert_level = 50
+    team.expert_level_percentage = 10
+
+    expert = {'skills':[{'name': 'java', 'level': 48}]}
+    member = {'skills':[]}
+
+    card = {'skill':'java', 'level': 10, 'assigned': [member, expert]}
+
+    team.add_expert_level(card, expert)
+    self.assertEqual(member['skills'], [{'name': 'java', 'level': 5}])
+    self.assertEqual(expert['skills'], [{'name': 'java', 'level': 50}])
+
+    team.add_expert_level(card, expert)
+    self.assertEqual(member['skills'], [{'name': 'java', 'level': 10}])
+    self.assertEqual(expert['skills'], [{'name': 'java', 'level': 50}])
+
+  def test_add_member_knowledge(self):
+    roles = r.Roles()
+    team = t.Team(roles)
+    team.expert_level = 50
+    team.expert_level_percentage = 10
+    team.default_share = 1
+
+    expert = {'skills':[{'name': 'java', 'level': 48}]}
+    member1 = {'skills':[]}
+    member2 = {'skills':[]}
+
+    card = {'skill': 'java', 'level': 5, 'assigned': [member1, member2]}
+
+    team.add_member_knowledge(card)
+    self.assertEqual(member1['skills'], [{'name': 'java', 'level': 1}])
+    self.assertEqual(member2['skills'], [{'name': 'java', 'level': 1}])
+
+    card = {'skill': 'java', 'level': 5, 'assigned': [expert, member2]}
+
+    team.add_member_knowledge(card)
+    self.assertEqual(expert['skills'], [{'name': 'java', 'level': 50}])
+    self.assertEqual(member2['skills'], [{'name': 'java', 'level': 6}])
 
 class TestFlow(unittest.TestCase):
 

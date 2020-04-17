@@ -66,10 +66,10 @@ class Board:
         for skill in assigned['skills']:
           if (skill['name'] == card['skill']):
             self.card.complete_work_on_card(card, skill['level'])
-          self.calculate_knowledge_share(card, assigned)
+      self.calculate_knowledge_share(card)
       if (self.card.card_is_complete(card)):
         self.move_card(card, 'doing', 'done')
         self.unassign_members_from_card(card)
 
-    def calculate_knowledge_share(self, card, member):
-      self.team.add_member_knowledge(member, card)
+    def calculate_knowledge_share(self, card):
+      self.team.add_member_knowledge(card)
