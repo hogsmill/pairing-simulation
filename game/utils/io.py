@@ -36,3 +36,15 @@ def queue_string(board, type):
     assigned = comma.join(assigned)
     items.append("Id: {} {} [{}]".format(card['id'], status, assigned))
   return comma.join(items)
+
+
+def start_results_file(file, n):
+  f = open(file, "a")
+  f.write(" ,")
+  for i in range(n):
+    f.write("{}, ".format(i + 1))
+  f.write("\n")
+  return f
+
+def save_results(f, results):
+  f.write( ", ".join(results) + "\n")
