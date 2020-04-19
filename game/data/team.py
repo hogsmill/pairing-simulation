@@ -1,4 +1,7 @@
 
+from random import seed
+from random import randint
+
 class Team:
 
   def __init__(self, roles, expert_level = 100, expert_level_percentage = 10, default_share = 1):
@@ -24,6 +27,9 @@ class Team:
     for member_skill in member['skills']:
       if (member_skill['name'] != skill):
         return member_skill
+
+  def get_random_member(self):
+    return self.team[randint(0, len(self.team) - 1)]
 
   def add_member_knowledge(self, card):
     # Rules:

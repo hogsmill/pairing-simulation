@@ -12,7 +12,7 @@ class Flow:
     if (strategy):
       self.strategies.strategies = [strategy]
 
-    self.board.max_cycles = 12
+    self.board.max_cycles = 100
     backlog = b.Backlog()
     self.board.cards['to do'] = backlog.generate_backlog()
 

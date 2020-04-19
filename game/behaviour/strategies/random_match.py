@@ -1,7 +1,4 @@
 
-from random import seed
-from random import randint
-
 class RandomMatch:
 
   def assign(self, card, board):
@@ -12,6 +9,6 @@ class RandomMatch:
   def do_assign(self, card, board):
     assigned = False
     if (len(board.team.team) > 0):
-      assigned = board.team.team[randint(0, len(board.team.team) - 1)]
+      assigned = board.team.get_random_member()
     if (assigned):
       board.assign_member_to_card(card, assigned)

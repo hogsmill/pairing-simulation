@@ -20,7 +20,7 @@ class BestShare:
             best_match = member
             best_match_skill = skill
     if (not best_match and len(board.team.team) > 0):
-      best_match = board.team.team[0]
+      best_match = board.team.get_random_member()
     if (best_match):
       board.assign_member_to_card(card, best_match)
 
@@ -34,6 +34,6 @@ class BestShare:
         worst_match = board.team.team[i]
       i = i + 1
     if (not worst_match and len(board.team.team) > 0):
-      worst_match = board.team.team[0]
+      worst_match = board.team.get_random_member()
     if (worst_match):
       board.assign_member_to_card(card, worst_match)

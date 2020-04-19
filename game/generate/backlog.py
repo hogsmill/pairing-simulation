@@ -21,13 +21,13 @@ class Backlog:
       'Devops': ['jenkins', 'firewalls'],
       'Other': ['SEO', 'security']
     }
-    self.levels = [3, 50, 70]
+    self.levels = [30, 50, 80]
     self.percentages = {
       'Front End': 10,
-      'Back End': 10,
+      'Back End': 50,
       'Database': 10,
-      'Devops': 30,
-      'Other': 30
+      'Devops': 10,
+      'Other': 20
     }
 
     self.no_of_cards = no_of_cards

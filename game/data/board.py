@@ -5,11 +5,13 @@ from utils.io import print_working_on_card
 
 class Board:
 
-    def __init__(self, team, cycles = 50):
+    def __init__(self, team, cycles = 50, max_work_per_cycle = 20):
 
       self.max_cycles = cycles
+      self.max_work_per_cycle = max_work_per_cycle
       self.card = c.Card()
       self.team = team
+
       self.cards = {
         'to do': [
           {
@@ -65,7 +67,7 @@ class Board:
       for assigned in card['assigned']:
         for skill in assigned['skills']:
           if (skill['name'] == card['skill']):
-            self.card.complete_work_on_card(card, skill['level'])
+            self.card.complete_work_on_card(card, skill['level'], self.max_work_per_cycle)
       self.calculate_knowledge_share(card)
       if (self.card.card_is_complete(card)):
         self.move_card(card, 'doing', 'done')

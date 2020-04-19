@@ -48,4 +48,4 @@ be 30 JavaScript left.
 
 Work is done in cycles:
 1. Members are assigned to as many cards as possible, given the pairing strategy, e.g. 2 on each if pairing. Once  card has members assigned, it is moved to Doing
-1. The amount of work for the cycle is calculated
+1. The amount of work for the cycle is calculated. If the card is complete, it is moved to complete

@@ -1,4 +1,7 @@
 
+from random import seed
+from random import randint
+
 class NoPairing:
 
   def assign(self, card, board):
@@ -19,6 +22,6 @@ class NoPairing:
             best_match = member
             best_match_skill = skill
     if (not best_match and len(board.team.team) > 0):
-      best_match = board.team.team[0]
+      best_match = board.team.get_random_member()
     if (best_match):
       board.assign_member_to_card(card, best_match)

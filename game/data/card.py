@@ -11,6 +11,7 @@ class Card:
   def card_is_complete(self, card):
     return card['completed'] >= card['level']
 
-  def complete_work_on_card(self, card, amount):
+  def complete_work_on_card(self, card, amount, max_amount):
+    amount = min(amount, max_amount)
     card['completed'] = card['completed'] + amount
     card['remaining'] = card['remaining'] - amount
