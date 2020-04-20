@@ -13,23 +13,14 @@ class Board:
       self.team = team
 
       self.cards = {
-        'to do': [
-          {
-            'id': 1,
-            'name': 'Front End 1',
-            'skill': 'javascript',
-            'level': 30
-          },
-          {
-            'id': 2,
-            'name': 'Back End 1',
-            'skill': 'java',
-            'level': 50
-          }
-      ],
-      'doing': [],
-      'done': []
-    }
+        'to do': [],
+        'doing': [],
+        'done': []
+      }
+
+      self.results = {
+        'strategy':'', 'to do': [], 'doing': [], 'done': []
+      }
 
     def prepare_board(self, board):
       for card in board.cards['to do']:
@@ -66,7 +57,7 @@ class Board:
       done = 0
       for assigned in card['assigned']:
         for skill in assigned['skills']:
-          if (skill['name'] == card['skill']):
+          if (skill['name'] == card['needed']):
             self.card.complete_work_on_card(card, skill['level'], self.max_work_per_cycle)
       self.calculate_knowledge_share(card)
       if (self.card.card_is_complete(card)):
@@ -75,3 +66,8 @@ class Board:
 
     def calculate_knowledge_share(self, card):
       self.team.add_member_knowledge(card)
+
+    def save_status(self):
+      self.results['to do'].append("{}".format(len(self.cards['to do'])))
+      self.results['doing'].append("{}".format(len(self.cards['doing'])))
+      self.results['done'].append("{}".format(len(self.cards['done'])))

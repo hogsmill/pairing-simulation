@@ -48,7 +48,7 @@ class Team:
     level = 0
     for member in card['assigned']:
       for skill in member['skills']:
-        if (card['skill'] == skill['name']):
+        if (card['needed'] == skill['name']):
           if (not expert):
             expert = member
             level = skill['level']
@@ -58,15 +58,15 @@ class Team:
     return expert
 
   def add_expert_level(self, card, expert):
-    expert_skill = self.get_member_skill(expert, card['skill'])
+    expert_skill = self.get_member_skill(expert, card['needed'])
     expert_level = min(expert_skill['level'], self.expert_level)
     share_level = max(1, round(expert_skill['level'] * self.expert_level_percentage / 100))
     for member in card['assigned']:
-      self.add_share(member, card['skill'], share_level)
+      self.add_share(member, card['needed'], share_level)
 
   def add_default_level(self, card):
     for member in card['assigned']:
-      self.add_share(member, card['skill'], self.default_share)
+      self.add_share(member, card['needed'], self.default_share)
 
   def add_share(self, member, card_skill, level):
     added = False

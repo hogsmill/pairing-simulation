@@ -40,7 +40,7 @@ class Flow:
     print_status("  Running {}, Pairing is {}".format(board.strategy, board.pairing))
     cycles = 0
     board.prepare_board(board)
-    board.results = [board.strategy]
+    board.results['strategy'] = board.strategy
     while(not board.board_complete() and cycles < board.max_cycles):
       print_status("    Cycle {}".format(cycles))
       print_queues('Start', board)
@@ -49,7 +49,7 @@ class Flow:
       board.calculate_work_done_on_cards(board)
 
       print_queues('End  ', board)
-      board.results.append("{}".format(len(board.cards['done'])))
+      board.save_status()
       cycles = cycles + 1
 
     total_cards = len(board.cards['to do']) + len(board.cards['doing']) + len(board.cards['done'])

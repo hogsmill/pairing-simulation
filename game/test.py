@@ -47,9 +47,8 @@ class TestRoles(unittest.TestCase):
 class TestCard(unittest.TestCase):
 
   def test_prepare_card(self):
-      #board = create_board()
     card = c.Card()
-    test_card = {'skill': 'a', 'level': 10}
+    test_card = {'needed': 'a', 'amount': 10}
 
     card.prepare_card(test_card)
     self.assertEqual(test_card['assigned'], [])
@@ -58,7 +57,7 @@ class TestCard(unittest.TestCase):
 
   def test_card_is_complete(self):
     card = c.Card()
-    test_card = {'skill': 'skill1', 'level': 10}
+    test_card = {'needed': 'skill1', 'amount': 10}
     card.prepare_card(test_card)
 
     self.assertFalse(card.card_is_complete(test_card))
@@ -74,14 +73,14 @@ class TestCard(unittest.TestCase):
 
   def test_complete_work_on_card(self):
     card = c.Card()
-    test_card = {'id': 1, 'name': '1', 'skill': 'javascript', 'level': 30}
+    test_card = {'id': 1, 'name': '1', 'needed': 'javascript', 'amount': 30}
     card.prepare_card(test_card)
 
-    card.complete_work_on_card(test_card, 10)
+    card.complete_work_on_card(test_card, 10, 10)
     self.assertEqual(test_card['remaining'], 20)
     self.assertEqual(test_card['completed'], 10)
 
-    card.complete_work_on_card(test_card, 10)
+    card.complete_work_on_card(test_card, 10, 10)
     self.assertEqual(test_card['remaining'], 10)
     self.assertEqual(test_card['completed'], 20)
 
@@ -102,7 +101,7 @@ class TestBoard(unittest.TestCase):
   def test_card_is_assigned(self):
     board = create_board()
     card = c.Card()
-    test_card = {'id': 1, 'name': '1', 'skill': 'java', 'level': 10}
+    test_card = {'id': 1, 'name': '1', 'needed': 'java', 'amount': 10}
     card.prepare_card(test_card)
 
     board.strategy = 'No Pairing'
@@ -130,7 +129,7 @@ class TestBoard(unittest.TestCase):
   def test_assign_member_to_card(self):
     board = create_board()
     card = c.Card()
-    test_card = {'id': 1, 'name': '1', 'skill': 'java', 'level': 10}
+    test_card = {'id': 1, 'name': '1', 'needed': 'java', 'amount': 10}
     card.prepare_card(test_card)
 
     team_length = len(board.team.team)
@@ -144,7 +143,7 @@ class TestBoard(unittest.TestCase):
   def test_unassign_members_from_card(self):
     board = create_board()
     card = c.Card()
-    test_card = {'id': 1, 'name': '1', 'skill': 'java', 'level': 10}
+    test_card = {'id': 1, 'name': '1', 'needed': 'java', 'amount': 10}
     card.prepare_card(test_card)
     team_length = len(board.team.team)
     test_card['assigned'] = board.team.team
@@ -224,7 +223,7 @@ class TestTeam(unittest.TestCase):
     expert = {'name': 'expert', 'skills':[{'name': 'java', 'level': 48}]}
     member = {'skills':[]}
 
-    card = {'skill':'java', 'level': 10, 'assigned': [member, expert]}
+    card = {'needed':'java', 'amount': 10, 'assigned': [member, expert]}
 
     expert = team.find_most_expert_on_card(card)
     self.assertEqual(expert['name'], 'expert')
@@ -236,7 +235,7 @@ class TestTeam(unittest.TestCase):
 
     member1 = {'skills':[]}
     member2 = {'skills':[]}
-    card = {'skill':'java', 'level': 10, 'assigned': [member1, member2]}
+    card = {'needed':'java', 'amount': 10, 'assigned': [member1, member2]}
 
     team.add_default_level(card)
     self.assertEqual(member1['skills'], [{'name': 'java', 'level': 1}])
@@ -251,7 +250,7 @@ class TestTeam(unittest.TestCase):
     expert = {'skills':[{'name': 'java', 'level': 48}]}
     member = {'skills':[]}
 
-    card = {'skill':'java', 'level': 10, 'assigned': [member, expert]}
+    card = {'needed':'java', 'amount': 10, 'assigned': [member, expert]}
 
     team.add_expert_level(card, expert)
     self.assertEqual(member['skills'], [{'name': 'java', 'level': 5}])
@@ -272,13 +271,13 @@ class TestTeam(unittest.TestCase):
     member1 = {'skills':[]}
     member2 = {'skills':[]}
 
-    card = {'skill': 'java', 'level': 5, 'assigned': [member1, member2]}
+    card = {'needed': 'java', 'amount': 5, 'assigned': [member1, member2]}
 
     team.add_member_knowledge(card)
     self.assertEqual(member1['skills'], [{'name': 'java', 'level': 1}])
     self.assertEqual(member2['skills'], [{'name': 'java', 'level': 1}])
 
-    card = {'skill': 'java', 'level': 5, 'assigned': [expert, member2]}
+    card = {'needed': 'java', 'amount': 5, 'assigned': [expert, member2]}
 
     team.add_member_knowledge(card)
     self.assertEqual(expert['skills'], [{'name': 'java', 'level': 50}])

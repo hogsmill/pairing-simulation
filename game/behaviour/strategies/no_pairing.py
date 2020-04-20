@@ -12,7 +12,7 @@ class NoPairing:
     best_match = False
     best_match_skill = False
     for member in board.team.team:
-      skill = board.team.get_member_skill(member, card['skill'])
+      skill = board.team.get_member_skill(member, card['needed'])
       if (skill):
         if (not best_match):
           best_match = member

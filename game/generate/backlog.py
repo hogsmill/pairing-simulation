@@ -8,11 +8,11 @@ class Backlog:
   # {
   #   'id': 1,
   #   'name': 'Front End 1',
-  #   'skill': 'javascript',
-  #   'level': 30
+  #   'needed': 'javascript',
+  #   'amount': 30
   # }
 
-  def  __init__(self, no_of_cards = 100):
+  def  __init__(self, no_of_cards = 50):
 
     self.skills = {
       'Front End': ['javascript', 'css', 'react'],
@@ -21,12 +21,12 @@ class Backlog:
       'Devops': ['jenkins', 'firewalls'],
       'Other': ['SEO', 'security']
     }
-    self.levels = [30, 50, 80]
+    self.levels = [100, 150, 200]
     self.percentages = {
-      'Front End': 10,
+      'Front End': 5,
       'Back End': 50,
       'Database': 10,
-      'Devops': 10,
+      'Devops': 15,
       'Other': 20
     }
 
@@ -56,10 +56,10 @@ class Backlog:
     return {
       'id': id,
       'name': "Card {}".format(i),
-      'skill': self.skills[area][skill],
-      'level': self.levels[level],
+      'needed': self.skills[area][skill],
+      'amount': self.levels[level],
 
-      # TODO: Rmeove these - they are added by prepare_card
+      # TODO: Remove these - they are added by prepare_card
       'assigned': [],
       'remaining': self.levels[level],
       'completed': 0

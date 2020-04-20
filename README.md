@@ -29,22 +29,22 @@ strategies:
 We have a simple Kanban board - To Do, Doing, Done.
 
 We have a set of cards that we want to move from To Do to Done. Each card requires
-a particular skill, and a level of that skill to complete it, e.g. JavaScript: 100
+a particular skill, and an amount of that skill to complete it, e.g. JavaScript: 100
 or SQL: 50
 
 We have a team - a set of members who each have a set of skills, e.g. JavaScript: 10
 and CSS: 20. Every time a team member works on a card, they increase their level of the
 skills on the card, up to a maximum "expert" level. As an example, working on a
-JavaScript card would raise JavaScript: 10 to JavaScript: 20
+JavaScript card could raise JavaScript: 10 to JavaScript: 20
 
 Members learn different amounts depending who they are pairing with:
-1. If they pair with somebody who has the skill required for the card, they learn (e.g.) 10% of that experts Knowledge
+1. If they pair with somebody who has the skill required for the card, they learn (e.g.) 10% of that experts knowledge
 1. If no-one on the card has the required knowledge, they learn a s small default amount, e.g. 1
 
 Team members use their skills to work on a card. They complete the amount of work
 on the card of the skill they have. As an example, if the card had JavaScript: 50,
 and the member had JavaScript: 20, after they had worked on the card, there would
-be 30 JavaScript left.
+be 30 JavaScript left. (There is a maximum amount of work that can be done, though...)
 
 Work is done in cycles:
 1. Members are assigned to as many cards as possible, given the pairing strategy, e.g. 2 on each if pairing. Once  card has members assigned, it is moved to Doing

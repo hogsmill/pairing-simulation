@@ -10,7 +10,7 @@ class BestShare:
     best_match = False
     best_match_skill = False
     for member in board.team.team:
-      skill = board.team.get_member_skill(member, card['skill'])
+      skill = board.team.get_member_skill(member, card['needed'])
       if (skill):
         if (not best_match):
           best_match = member
@@ -28,8 +28,8 @@ class BestShare:
     worst_match = False
     i = 0
     while (not worst_match and i < len(board.team.team) and len(board.team.team) > 0):
-      skill = board.team.get_member_skill(board.team.team[i], card['skill'])
-      not_skill = board.team.get_member_not_skill(board.team.team[i], card['skill'])
+      skill = board.team.get_member_skill(board.team.team[i], card['needed'])
+      not_skill = board.team.get_member_not_skill(board.team.team[i], card['needed'])
       if (not_skill and not skill):
         worst_match = board.team.team[i]
       i = i + 1

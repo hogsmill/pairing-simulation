@@ -23,13 +23,13 @@ def print_team(when, team):
     print_status("Member: {}, skills {}".format(member['name'], comma.join(skills)), True)
 
 def print_working_on_card(card):
-      print_status("        Working on card Id:'{}', required: {}:{}/{}".format(card['id'], card['skill'], card['completed'], card['level']))
+      print_status("        Working on card Id:'{}', required: {}:{}/{}".format(card['id'], card['needed'], card['completed'], card['amount']))
 
 def queue_string(board, type):
   items = []
   comma = ", "
   for card in board.cards[type]:
-    status = "[{} {}/{}]".format(card['skill'], card['completed'], card['level'])
+    status = "[{} {}/{}]".format(card['needed'], card['completed'], card['amount'])
     assigned = []
     for a in card['assigned']:
       assigned.append(a['name'])
@@ -40,11 +40,8 @@ def queue_string(board, type):
 
 def start_results_file(file, n):
   f = open(file, "a")
-  f.write(" ,")
-  for i in range(n):
-    f.write("{}, ".format(i + 1))
-  f.write("\n")
   return f
 
 def save_results(f, results):
-  f.write( ", ".join(results) + "\n")
+  results_str = results['strategy'] + ", " + ", ".join(results['done'])
+  f.write(results_str + "\n")
