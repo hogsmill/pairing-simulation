@@ -11,23 +11,19 @@
       </div>
     </div>
     <div v-for="(backlog, name) in state['strategies']" :key="name" class="board">
-      <h3>{{name}}</h3>
-      <div v-for="(queue, label) in state['strategies'][name]['backlog']" :key="label" class="queue">
-        <h4>{{label}}</h4>
-        <div v-for="card in queue" :key="card['id']" class="card">
-          Id: {{card['id']}}<br />
-          Needed: {{card['needed']}}<br />
-          Amount: {{card['amount']}}<br />
-          Left: {{card['remaining']}}<br />
-        </div>
-      </div>
+      <BoardView v-bind:state="state" v-bind:backlog="backlog" v-bind:name="name" />
     </div>
   </div>
 </template>
 
 <script>
+import BoardView from './BoardView.vue'
+
 export default {
   name: 'Results',
+  components: {
+    BoardView
+  },
   props: ['state'],
   methods: {
   }
@@ -39,7 +35,9 @@ export default {
   .graph .label { display: inline-block; width: 13%; text-align: right; padding-right: 2px; }
   .graph .container { display: inline-block; width: 80%; border: 1px solid; height: 20px; }
   .graph .status { height: 100%; background-color: green; }
-  .board { display: inline-block; width: 24%; border: 1px solid; margin: 2px; }
-  .queue { display: inline-block; width: 31%; margin: 2px; vertical-align: top; }
-  .card { border: 1px solid; margin: 0 0 2px 0; text-align: left; font-size: 60%; }
+
+  .xboard { display: inline-block; width: 24%; margin: 2px; }
+  .xaboard { border: 1px solid; }
+  .xqueue { display: inline-block; width: 31%; margin: 2px; vertical-align: top; }
+  .xcard { border: 1px solid; margin: 0 0 2px 0; text-align: left; font-size: 60%; }
 </style>
