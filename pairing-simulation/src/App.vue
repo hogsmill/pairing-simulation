@@ -197,7 +197,7 @@ export default {
   .menu span:hover { text-decoration: underline; }
   .selected { text-decoration: underline; font-weight: bold; }
 
-  .setup{ width: 40%; display: inline-block; vertical-align: top; }
+  .setup{ width: 40%; display: inline-block; vertical-align: top; padding-right:24px; }
   .member { border: 1px solid;  vertical-align: top; }
   .member .name { width: 20%; display: inline-block; vertical-align: top; }
   .member .skills { width: 70%; display: inline-block; vertical-align: top; text-align: left; }

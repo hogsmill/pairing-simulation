@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div v-for="(backlog, name) in state['strategies']" :key="name" class="board">
+    <div v-for="(backlog, name) in state['strategies']" :key="name" class="board" :style="{ visibility: visible(name), width: setWidth() }">
       <BoardView v-bind:state="state" v-bind:backlog="backlog" v-bind:name="name" />
     </div>
   </div>
@@ -26,6 +26,22 @@ export default {
   },
   props: ['state'],
   methods: {
+    visible(strategy) {
+      if (this.state['strategies'][strategy]['run']) {
+        return 'visible'
+      } else {
+        return 'hidden'
+      }
+    },
+    setWidth() {
+      var i = 0
+      for (var strategy in this.state['strategies']) {
+        if (this.state['strategies'][strategy]['run']) {
+          i++
+        }
+      }
+      return 90 / i + '%'
+    }
   }
 }
 </script>
@@ -36,8 +52,5 @@ export default {
   .graph .container { display: inline-block; width: 80%; border: 1px solid; height: 20px; }
   .graph .status { height: 100%; background-color: green; }
 
-  .xboard { display: inline-block; width: 24%; margin: 2px; }
-  .xaboard { border: 1px solid; }
-  .xqueue { display: inline-block; width: 31%; margin: 2px; vertical-align: top; }
-  .xcard { border: 1px solid; margin: 0 0 2px 0; text-align: left; font-size: 60%; }
+  .board { display: inline-block; width: 24%; margin: 2px; }
 </style>
