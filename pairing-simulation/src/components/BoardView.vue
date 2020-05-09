@@ -1,8 +1,8 @@
 <template>
   <div v-if="state['strategies'][name]['run']" class="aboard">
-    <h3>{{name}}</h3>
+    <h3>{{state['strategies'][name]['name']}}</h3>
     <div v-for="(queue, label) in state['strategies'][name]['backlog']" :key="label" class="queue">
-      <h4>{{label}}</h4>
+      <h4>{{label}} ({{queue.length}})</h4>
       <div v-for="card in queue" :key="card['id']">
         <CardView  v-bind:card="card" />
       </div>
@@ -28,6 +28,7 @@ export default {
 
 <style>
   .aboard { border: 1px solid; }
+  .aboard h3 { text-align: center; }
   .queue { display: inline-block; width: 31%; margin: 2px; vertical-align: top; }
   .card { border: 1px solid; margin: 0 0 2px 0; text-align: left; font-size: 60%; }
 </style>

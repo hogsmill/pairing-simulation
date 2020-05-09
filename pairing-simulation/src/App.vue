@@ -14,7 +14,7 @@
         <button @click="setUp" :disabled="state['running']">Create Team and Backlog</button>
         <div v-if="state.backlogCreated">
           <div class="member" v-for="member in state['team']" :key="member['name']">
-            <div class="name">{{member['name']}}</div>
+            <div class="name">{{member['name']}}: </div>
             <div class="skills">
               <span v-for="skill in member['skills']" :key="skill['name']" class="skill">
                 [{{skill['name']}}: {{skill['level']}}]
@@ -33,7 +33,7 @@
           <input type="radio" id="stepThrough" name="runType" value="Step Through" v-model="state['runType']">
           <label for="stepThrough">Step-Through</label>
         </div>
-        <button @click="nextSprint()" class="start" :disabled="state['running'] || ! state['backlogCreated']">Go</button>
+        <button @click="run()" class="start" :disabled="state['running'] || ! state['backlogCreated']">Go</button>
       </div>
       <div class="strategies">
         <h2>Strategies</h2>
@@ -108,10 +108,10 @@ export default {
           { 'name': 'DBA', 'skills': 'dba' }
         ],
         strategies: {
-          'no-pairing': { run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
-          'best-pair': { run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
-          'best-share': { run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
-          'random-share': { run: true, backlog: {'to do': [], 'doing': [], 'done': []} }
+          'no-pairing': { name: 'No Pairing', run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
+          'best-pair': { name: 'Best Pair', run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
+          'best-share': { name: 'Best Share', run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
+          'random-share': { name: 'Random Share', run: true, backlog: {'to do': [], 'doing': [], 'done': []} }
         }
       }
     }
@@ -153,8 +153,6 @@ export default {
         this.state['team'][i]['skills'] = this.roleSkills[this.state['team'][i]['skills']]
       }
 
-      console.log(this.state)
-
       // Create backlog
 
       var noOfCards = this.calculateNumberOfCards()
@@ -170,15 +168,29 @@ export default {
       }
       for (var strategy in this.state['strategies']) {
         for (i = 0; i < cards.length; i++) {
-        this.state['strategies'][strategy]['backlog']['to do'].push(cards[i])
+          this.state['strategies'][strategy]['backlog']['to do'].push(cards[i])
         }
+        this.state['strategies'][strategy]['team'] = JSON.parse(JSON.stringify(this.state['team']))
       }
       this.state.backlogCreated = true
+      console.log(this.state)
     },
-    nextSprint() {
+    //assigned(board) {
+    //  return
+    //},
+    //assignCardByStrategy(board, strategy) {
+    //},
+    assignCards(strategy) {
+      console.log(strategy)
+      //var board = this.state['strategies'][strategy]
+      //while (! assigned(board)) {
+        //assignCardByStrategy(board, strategy)
+      //}
+    },
+    run() {
       for (var strategy in this.state['strategies']) {
         this.assignCards(strategy)
-        this.playCards(strategy)
+        //this.calculateWorkDoneOnCards(strategy)
       }
       this.state['sprint'] = this.state['sprint'] + 1
       if (this.state['runType'] == "Full Run" && this.state['sprint'] < 20) {
@@ -198,9 +210,9 @@ export default {
   .selected { text-decoration: underline; font-weight: bold; }
 
   .setup{ width: 40%; display: inline-block; vertical-align: top; padding-right:24px; }
-  .member { border: 1px solid;  vertical-align: top; }
-  .member .name { width: 20%; display: inline-block; vertical-align: top; }
-  .member .skills { width: 70%; display: inline-block; vertical-align: top; text-align: left; }
+  .member { vertical-align: top; }
+  .member .name { width: 20%; display: inline-block; vertical-align: top; text-align: right; padding: 2px; }
+  .member .skills { width: 70%; display: inline-block; vertical-align: top; text-align: left; pDDING: 2PX;  }
 
   .run-type { width: 15%; display: inline-block; vertical-align: top; }
   .run-type div { text-align: left; }
