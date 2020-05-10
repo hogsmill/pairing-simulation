@@ -2,7 +2,7 @@
   <div class="card">
     Id: {{card['id']}}<br />
     <div class="progress-container">
-      <div class="progress"></div>
+      <div class="progress" :style="{ width: setWidth(card) }"></div>
     </div>
     Needed: {{card['needed']}}<br />
     Amount: {{card['amount']}}<br />
@@ -15,6 +15,11 @@
 export default {
   name: 'Card',
   props: ['card'],
+  methods: {
+    setWidth(card) {
+      return 100 * card['completed'] / card['amount'] + '%'
+    }
+  }
 }
 </script>
 

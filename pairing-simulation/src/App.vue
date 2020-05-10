@@ -11,6 +11,10 @@
       <h1>Pairing Simulation</h1>
       <div class="setup">
         <h2>Set Up</h2>
+        <div class="radio no-of-cards">
+          <label for="noOfCardws">No. Of Cards </label>
+          <input type="text" id="noOfCards" name="noOfCards" v-model="noOfCards">
+        </div>
         <button @click="setUp" :disabled="state['running']">Create Team and Backlog</button>
         <div v-if="state.backlogCreated">
           <div class="member" v-for="member in state['team']" :key="member['name']">
@@ -26,11 +30,11 @@
       <div class="run-type">
         <h2>Run Type</h2>
         <div class="radio">
-          <input type="radio" id="fullRun" name="runType" value="Full Run" v-model="state['runType']">
+          <input type="radio" id="fullRun" name="runType" v-model="state['runType']">
           <label for="fullRun">Full Run</label>
         </div>
         <div class="radio">
-          <input type="radio" id="stepThrough" name="runType" value="Step Through" v-model="state['runType']">
+          <input type="radio" id="stepThrough" name="runType" v-model="state['runType']">
           <label for="stepThrough">Step-Through</label>
         </div>
         <button @click="run()" class="start" :disabled="state['running'] || ! state['backlogCreated']">Go</button>
@@ -38,19 +42,19 @@
       <div class="strategies">
         <h2>Strategies</h2>
         <div class="radio">
-          <input type="checkbox" id="noPairing" name="noPairing" value="No Pairing" v-model="state['strategies']['no-pairing']['run']">
+          <input type="checkbox" id="noPairing" name="noPairing" v-model="state['strategies']['no-pairing']['run']">
           <label for="noPairing">No Pairing</label>
         </div>
         <div class="radio">
-          <input type="checkbox" id="bestPair" name="bestPair" value="Best Pairing" v-model="state['strategies']['best-pair']['run']">
+          <input type="checkbox" id="bestPair" name="bestPair" v-model="state['strategies']['best-pair']['run']">
           <label for="bestPair">Best Pairing</label>
         </div>
         <div class="radio">
-          <input type="checkbox" id="bestShare" name="bestShare" value="Best Share" v-model="state['strategies']['best-share']['run']">
+          <input type="checkbox" id="bestShare" name="bestShare" v-model="state['strategies']['best-share']['run']">
           <label for="randomShare">Best Share</label>
         </div>
         <div class="radio">
-          <input type="checkbox" id="randomShare" name="randomShare" value="Best Share" v-model="state['strategies']['random-share']['run']">
+          <input type="checkbox" id="randomShare" name="randomShare" v-model="state['strategies']['random-share']['run']">
           <label for="randomShare">Random Share</label>
         </div>
       </div>
@@ -209,7 +213,10 @@ export default {
   .menu span:hover { text-decoration: underline; }
   .selected { text-decoration: underline; font-weight: bold; }
 
-  .setup{ width: 40%; display: inline-block; vertical-align: top; padding-right:24px; }
+  .setup { width: 40%; display: inline-block; vertical-align: top; padding-right:24px; }
+  .setup button { margin-bottom: 12px; }
+  .no-of-cards { margin-bottom: 12px; }
+  .no-of-cards input { width: 30px; }
   .member { vertical-align: top; }
   .member .name { width: 20%; display: inline-block; vertical-align: top; text-align: right; padding: 2px; }
   .member .skills { width: 70%; display: inline-block; vertical-align: top; text-align: left; pDDING: 2PX;  }
