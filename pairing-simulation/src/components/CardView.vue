@@ -7,7 +7,7 @@
     Needed: {{card['needed']}}<br />
     Amount: {{card['amount']}}<br />
     Left: {{card['remaining']}}<br />
-    Assigned: {{card['assigned'].join(', ')}}
+    Assigned: {{getAssigned(card)}}
   </div>
 </template>
 
@@ -18,6 +18,13 @@ export default {
   methods: {
     setWidth(card) {
       return 100 * card['completed'] / card['amount'] + '%'
+    },
+    getAssigned(card) {
+      var assigned = []
+      for (var i = 0; i < card['assigned'].length; i++) {
+        assigned.push(card['assigned'][i]['name'])
+      }
+      return assigned.join(', ')
     }
   }
 }

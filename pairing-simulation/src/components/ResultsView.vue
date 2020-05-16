@@ -1,7 +1,6 @@
 <template>
   <div class="results">
-    <h2>Results</h2>
-    <div class="sprint">Sprint {{state['sprint']}}</div>
+    <h2>Results  <span v-if="state['running']">(Sprint {{state['sprint']}})</span></h2>
     <div class="graph">
       <div v-for="(backlog, name) in state['strategies']" :key="name" class="graph">
         <div class="label">{{state['strategies'][name]['name']}}</div>
@@ -47,7 +46,6 @@ export default {
 </script>
 
 <style>
-  .sprint { text-align: right; }
   .graph { vertical-align: top; }
   .graph .label { display: inline-block; width: 13%; text-align: right; padding-right: 2px; height: 20px; vertical-align: top; }
   .graph .container { display: inline-block; width: 80%; border: 1px solid; height: 20px; }

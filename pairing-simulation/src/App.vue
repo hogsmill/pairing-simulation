@@ -9,7 +9,7 @@
     </div>
     <div v-if="!showAbout">
       <h1>Pairing Simulation</h1>
-      <div class="setup">
+      <div class="setup" v-if="!state['running']">
         <h2>Set Up</h2>
         <div class="radio no-of-cards">
           <label for="noOfCardws">No. Of Cards </label>
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="run-type">
+      <div class="run-type" v-if="!state['running']">
         <h2>Run Type</h2>
         <div class="radio">
           <input type="radio" id="fullRun" name="runType" v-model="state['runType']">
@@ -39,7 +39,7 @@
         </div>
         <button @click="run()" class="start" :disabled="state['running'] || ! state['backlogCreated']">Go</button>
       </div>
-      <div class="strategies">
+      <div class="strategies" v-if="!state['running']">
         <h2>Strategies</h2>
         <div class="radio">
           <input type="checkbox" id="noPairing" name="noPairing" v-model="state['strategies']['no-pairing']['run']">
@@ -64,6 +64,9 @@
 </template>
 
 <script>
+import setup from './behaviour/setup.js'
+import assign from './behaviour/assign.js'
+import calculate from './behaviour/calculate.js'
 import ResultsView from './components/ResultsView.vue'
 import AboutView from './components/AboutView.vue'
 
@@ -76,7 +79,7 @@ export default {
   data() {
     return {
       showAbout: false,
-      noOfCards: 100,
+      noOfCards: 5, // 100,
       percentages: {
         'Front End': 5,
         'Back End': 50,
@@ -116,91 +119,40 @@ export default {
           'best-pair': { name: 'Best Pair', run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
           'best-share': { name: 'Best Share', run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
           'random-share': { name: 'Random Share', run: true, backlog: {'to do': [], 'doing': [], 'done': []} }
-        }
+        },
+        maxWorkPerCycle: 20
       }
     }
   },
   methods: {
-    getRandomIndex(n) {
-      return Math.floor(Math.random() * Math.floor(n))
-    },
-    getRoleSkills(skill) {
-      return this.roleSkills[skill]
-    },
-    calculateNumberOfCards() {
-      var cards = {}
-      for (var key in this.percentages) {
-        cards[key] = parseInt(this.noOfCards * this.percentages[key] / 100)
-      }
-      return cards
-    },
-    generateCard(area, i, id) {
-      var skill = this.getRandomIndex(this.skills[area].length - 1)
-      var level = this.getRandomIndex(this.levels.length - 1)
-      return {
-        'id': id,
-        'name': "Card " + i,
-        'needed': this.skills[area][skill],
-        'amount': this.levels[level],
-
-        // TODO: Remove these - they are added by prepare_card
-        'assigned': [],
-        'remaining': this.levels[level],
-        'completed': 0
-      }
-    },
     setUp() {
-
-      // Create team
-
-      for (var i = 0; i < this.state['team'].length; i++) {
-        this.state['team'][i]['skills'] = this.roleSkills[this.state['team'][i]['skills']]
-      }
-
-      // Create backlog
-
-      var noOfCards = this.calculateNumberOfCards()
-      var cards = []
-      var id = 1
-      for (var skill in this.skills) {
-        i = 1
-        while (i <= noOfCards[skill]) {
-          cards.push(this.generateCard(skill, i, id))
-          i = i + 1
-          id = id + 1
-        }
-      }
-      for (var strategy in this.state['strategies']) {
-        for (i = 0; i < cards.length; i++) {
-          this.state['strategies'][strategy]['backlog']['to do'].push(cards[i])
-        }
-        this.state['strategies'][strategy]['team'] = JSON.parse(JSON.stringify(this.state['team']))
-      }
+      setup.createTeam(this.state, this.roleSkills)
+      setup.createBacklog(this.state, this.skills, this.levels, this.noOfCards, this.percentages)
       this.state.backlogCreated = true
       console.log(this.state)
+      console.log('initial team', this.state['strategies']['no-pairing']['team'].length, this.state['strategies']['no-pairing']['team'][0])
     },
-    //assigned(board) {
-    //  return
-    //},
-    //assignCardByStrategy(board, strategy) {
-    //},
-    assignCards(strategy) {
-      console.log(strategy)
-      //var board = this.state['strategies'][strategy]
-      //while (! assigned(board)) {
-        //assignCardByStrategy(board, strategy)
-      //}
+    boardsComplete() {
+      var complete = true
+      for (var strategy in this.state['strategies']) {
+        var board = this.state['strategies'][strategy]
+        complete = complete && board['backlog']['done'].length == board['noOfCards']
+      }
+      return complete
     },
     run() {
-      for (var strategy in this.state['strategies']) {
-        this.assignCards(strategy)
-        //this.calculateWorkDoneOnCards(strategy)
-      }
-      this.state['sprint'] = this.state['sprint'] + 1
-      if (this.state['runType'] == "Full Run" && this.state['sprint'] < 20) {
-        setTimeout(this.nextSprint, 300);
-      } else {
-        this.state['running'] = false
+      this.state['running'] = true
+      if (! this.boardsComplete()) {
+        for (var strategy in this.state['strategies']) {
+          assign.assignCards(this.state, strategy)
+          calculate.calculateWorkDoneOnCards(this.state, strategy)
+        }
+        this.state['sprint'] = this.state['sprint'] + 1
+        if (this.state['runType'] == "Full Run" && this.state['sprint'] < 20) {
+          setTimeout(this.nextSprint, 300);
+        } else {
+          this.state['running'] = false
+        }
       }
     }
   }
