@@ -1,3 +1,4 @@
+'use strict';
 
 
 var getRandomIndex = function(n) {
@@ -38,22 +39,25 @@ var SetUp = {
   },
 
   createBacklog: function(state, skills, levels, numberOfCards, percentages) {
-    var i
-    var noOfCards = calculateNumberOfCards(numberOfCards, percentages)
+    var i, total = 0
     var cards = []
     var id = 1
+    var noOfCards = calculateNumberOfCards(numberOfCards, percentages)
     for (var skill in skills) {
       i = 1
       while (i <= noOfCards[skill]) {
         cards.push(generateCard(skill, skills, levels, i, id))
         i = i + 1
         id = id + 1
+        total = total + 1
       }
     }
+    state['noOfCards'] = total
     for (var strategy in state['strategies']) {
-      for (i = 0; i < cards.length; i++) {
-        state['strategies'][strategy]['backlog']['to do'].push(cards[i])
-      }
+      //for (i = 0; i < cards.length; i++) {
+      //  state['strategies'][strategy]['backlog']['to do'].push(cards[i])
+      //}
+      state['strategies'][strategy]['backlog']['to do'] = JSON.parse(JSON.stringify(cards))
       state['strategies'][strategy]['team'] = JSON.parse(JSON.stringify(state['team']))
       state['strategies'][strategy]['noOfCards'] = numberOfCards
     }

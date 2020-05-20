@@ -13,7 +13,7 @@
         <h2>Set Up</h2>
         <div class="radio no-of-cards">
           <label for="noOfCardws">No. Of Cards </label>
-          <input type="text" id="noOfCards" name="noOfCards" v-model="noOfCards">
+          <input type="text" id="noOfCards" name="noOfCards" v-model="state.noOfCards">
         </div>
         <button @click="setUp" :disabled="state['running']">Create Team and Backlog</button>
         <div v-if="state.backlogCreated">
@@ -30,11 +30,11 @@
       <div class="run-type" v-if="!state['running']">
         <h2>Run Type</h2>
         <div class="radio">
-          <input type="radio" id="fullRun" name="runType" v-model="state['runType']">
+          <input type="radio" id="fullRun" name="runType" v-model="state['runType']" v-bind:value="'Full Run'">
           <label for="fullRun">Full Run</label>
         </div>
         <div class="radio">
-          <input type="radio" id="stepThrough" name="runType" v-model="state['runType']">
+          <input type="radio" id="stepThrough" name="runType" v-model="state['runType']" v-bind:value="'Step Through'">
           <label for="stepThrough">Step-Through</label>
         </div>
         <button @click="run()" class="start" :disabled="state['running'] || ! state['backlogCreated']">Go</button>
@@ -67,6 +67,7 @@
 import setup from './behaviour/setup.js'
 import assign from './behaviour/assign.js'
 import calculate from './behaviour/calculate.js'
+import knowledge from './behaviour/knowledge.js'
 import ResultsView from './components/ResultsView.vue'
 import AboutView from './components/AboutView.vue'
 
@@ -79,29 +80,29 @@ export default {
   data() {
     return {
       showAbout: false,
-      noOfCards: 5, // 100,
       percentages: {
-        'Front End': 5,
-        'Back End': 50,
+        'Front End': 20,
+        'Back End': 30,
         'Database': 10,
         'Devops': 15,
         'Other': 20
       },
       levels: [100, 150, 200],
       skills: {
-        'Front End': ['javascript', 'css', 'react'],
+        'Front End': ['JS', 'css', 'react'],
         'Back End': ['java', 'apis'],
         'Database': ['sql', 'mongo'],
-        'Devops': ['jenkins', 'firewalls'],
+        'Devops': ['jenkins', 'firewalls', 'azure'],
         'Other': ['SEO', 'security']
       },
       roleSkills: {
-        'front end': [{'name': 'javascript', 'level': 30}, {'name': 'css', 'level': 30}],
-        'back end': [{'name': 'java', 'level': 30}],
-        'devops': [{'name': 'jenkins', 'level': 30}],
-        'dba': [{'name': 'sql', 'level': 30}, {'name': 'mongo', 'level': 30}]
+        'front end': [{'name': 'JS', 'level': 50}, {'name': 'css', 'level': 50}],
+        'back end': [{'name': 'java', 'level': 50}],
+        'devops': [{'name': 'jenkins', 'level': 50}],
+        'dba': [{'name': 'sql', 'level': 50}, {'name': 'mongo', 'level': 50}]
       },
       state: {
+        noOfCards: 100,
         backlogCreated: false,
         runType: false,
         running: false,
@@ -118,38 +119,54 @@ export default {
           'no-pairing': { name: 'No Pairing', run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
           'best-pair': { name: 'Best Pair', run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
           'best-share': { name: 'Best Share', run: true, backlog: {'to do': [], 'doing': [], 'done': []} },
-          'random-share': { name: 'Random Share', run: true, backlog: {'to do': [], 'doing': [], 'done': []} }
+          'random-share': { name: 'Random Share', run: false, backlog: {'to do': [], 'doing': [], 'done': []} }
         },
-        maxWorkPerCycle: 20
+        maxWorkPerCycle: 20,
+        defaultLevel: 1,
+        expertLevel: 100,
+        expertLevelPercentage: 20
       }
     }
   },
   methods: {
     setUp() {
       setup.createTeam(this.state, this.roleSkills)
-      setup.createBacklog(this.state, this.skills, this.levels, this.noOfCards, this.percentages)
+      setup.createBacklog(this.state, this.skills, this.levels, this.state.noOfCards, this.percentages)
       this.state.backlogCreated = true
+      this.state['sprint'] = 0
       console.log(this.state)
-      console.log('initial team', this.state['strategies']['no-pairing']['team'].length, this.state['strategies']['no-pairing']['team'][0])
+    },
+    boardComplete(board) {
+      return board['backlog']['done'].length == this.state['noOfCards']
     },
     boardsComplete() {
       var complete = true
       for (var strategy in this.state['strategies']) {
         var board = this.state['strategies'][strategy]
-        complete = complete && board['backlog']['done'].length == board['noOfCards']
+        if (board['run']) {
+          complete = complete && this.boardComplete(board)
+        }
       }
       return complete
     },
     run() {
       this.state['running'] = true
+      console.log('Running', this.state['runType'])
       if (! this.boardsComplete()) {
         for (var strategy in this.state['strategies']) {
-          assign.assignCards(this.state, strategy)
-          calculate.calculateWorkDoneOnCards(this.state, strategy)
+        var board = this.state['strategies'][strategy]
+          if (board['run']) {
+            assign.assignCards(this.state, strategy)
+            calculate.calculateWorkDoneOnCards(this.state, strategy)
+            knowledge.calculateKnowledgeShare(this.state, strategy)
+            if (!this.boardComplete(board)) {
+              board['sprints'] = this.state['sprint'] + 1
+            }
+          }
         }
         this.state['sprint'] = this.state['sprint'] + 1
-        if (this.state['runType'] == "Full Run" && this.state['sprint'] < 20) {
-          setTimeout(this.nextSprint, 300);
+        if (this.state['runType'] == "Full Run") {
+          setTimeout(this.run, 300);
         } else {
           this.state['running'] = false
         }

@@ -1,11 +1,14 @@
 <template>
   <div class="results">
-    <h2>Results  <span v-if="state['running']">(Sprint {{state['sprint']}})</span></h2>
+    <h2>Results  <span v-if="state['sprint'] > 0">(Sprint {{state['sprint']}})</span></h2>
     <div class="graph">
       <div v-for="(backlog, name) in state['strategies']" :key="name" class="graph">
         <div class="label">{{state['strategies'][name]['name']}}</div>
         <div class="container">
-          <div class="status" :style="{ width: backlog['backlog']['done'].length + '%' }"></div>
+          <div class="status" :style="{ width: setStatusWidth(backlog) }">
+            {{backlog['backlog']['done'].length}}
+            <span v-if="backlog['backlog']['done'].length == state['noOfCards']">({{backlog['sprints']}} Sprints)</span>
+          </div>
         </div>
       </div>
     </div>
@@ -32,6 +35,9 @@ export default {
         return 'hidden'
       }
     },
+    setStatusWidth(backlog) {
+      return parseInt(backlog['backlog']['done'].length / this.state.noOfCards * 100) + '%'
+    },
     setWidth() {
       var i = 0
       for (var strategy in this.state['strategies']) {
@@ -48,8 +54,8 @@ export default {
 <style>
   .graph { vertical-align: top; }
   .graph .label { display: inline-block; width: 13%; text-align: right; padding-right: 2px; height: 20px; vertical-align: top; }
-  .graph .container { display: inline-block; width: 80%; border: 1px solid; height: 20px; }
-  .graph .status { height: 100%; background-color: green; }
+  .graph .container { display: inline-block; width: 80%; border: 1px solid; height: 20px;  }
+  .graph .status { height: 20px; background-color: green; color: white; border: 1px solid; }
 
-  .board { display: inline-block; width: 24%; margin: 2px; }
+  .board { display: inline-block; width: 24%; margin: 2px; vertical-align: top; }
 </style>
