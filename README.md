@@ -1,4 +1,37 @@
-# pairing-simulation
+# Pairing Simulation
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Running the node.js server for socket.io
+
+```
+Navigate to lego-flow/src
+Then run 'node server.js'
+This is will listen on localhost:3004
+```
+
+# About Pairing Simulation
 
 An app to explore how knowledge sharing through pairing influences speed and
 quality of software development.
