@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <div class="menu">
-      <span @click="function() { showAbout = false}" :class="{ selected: !showAbout }">Simulation</span>
-      <span @click="function() { showAbout = true}" :class="{ selected: showAbout }">About</span>
-    </div>
+    <appHeader></appHeader>
+
     <div v-if="showAbout">
       <AboutView />
     </div>
+
     <div v-if="!showAbout">
       <h1>Pairing Simulation</h1>
       <div class="setup" v-if="!state['running']">
@@ -64,22 +63,26 @@
 </template>
 
 <script>
+import io from "socket.io-client";
+
 import setup from './behaviour/setup.js'
 import assign from './behaviour/assign.js'
 import calculate from './behaviour/calculate.js'
 import knowledge from './behaviour/knowledge.js'
+
+import Header from "./components/Header.vue";
+import AboutView from './components/about/AboutView.vue'
 import ResultsView from './components/ResultsView.vue'
-import AboutView from './components/AboutView.vue'
 
 export default {
   name: 'App',
   components: {
-    ResultsView,
-    AboutView
+    appHeader: Header,
+    AboutView,
+    ResultsView
   },
   data() {
     return {
-      showAbout: false,
       percentages: {
         'Front End': 20,
         'Back End': 30,
@@ -129,6 +132,9 @@ export default {
     }
   },
   methods: {
+    updateShowAbout(payload) {
+      this.$store.dispatch("updateShowAbout", payload);
+    },
     setUp() {
       setup.createTeam(this.state, this.roleSkills)
       setup.createBacklog(this.state, this.skills, this.levels, this.state.noOfCards, this.percentages)
@@ -171,6 +177,28 @@ export default {
           this.state['running'] = false
         }
       }
+    }
+  },
+  computed: {
+    isHost() {
+      return this.$store.getters.getHost;
+    },
+    showAbout() {
+      return this.$store.getters.getShowAbout;
+    }
+  },
+  created() {
+    var host = "77.68.122.69"
+      if (location.hostname == 'localhost') {
+        host = 'localhost'
+      }
+      var connStr = "http://" + host + ":3002"
+      console.log("Connecting to: " + connStr)
+      this.socket = io(connStr)
+  },
+  mounted() {
+    if (location.search == "?host") {
+      this.$store.dispatch("updateHost", true)
     }
   }
 }
