@@ -54,6 +54,22 @@ button { margin: 2px; }
   width: 30%;
 }
 
+.btn {
+  padding: 0.25rem 0.6rem;
+}
+
+.btn-site-primary {
+  color: #fff;
+  background-color: #f4511e;
+  border-color: #f4511e;
+}
+
+.btn-site-primary:hover {
+  color: #f4511e;
+  background-color: #ffffff;
+  border-color: #f4511e;
+}
+
 .btn-info {
   color: #fff;
   background-color: #f4511e;
@@ -73,4 +89,8 @@ button { margin: 2px; }
 
 .btn-info:hover:disabled {
   color: #fff;
+}
+
+.hidden {
+  visibility: hidden;
 }

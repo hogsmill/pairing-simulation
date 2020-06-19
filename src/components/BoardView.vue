@@ -1,11 +1,11 @@
 <template>
-  <div v-if="state['strategies'][name]['run']" class="aboard">
-    <h3>{{state['strategies'][name]['name']}}</h3>
+  <div v-if="gameState['strategies'][name]['run']" class="aboard">
+    <h3>{{gameState['strategies'][name]['name']}}</h3>
     <div class="skills">
       <div v-for="(member, index) in getTeam(name)" :key="index">{{member}}</div>
     </div>
-    <div class="unassigned">Unassigned: {{getUnassigned(state['strategies'][name]['team'])}}</div>
-    <div v-for="(queue, label) in state['strategies'][name]['backlog']" :key="label" class="queue">
+    <div class="unassigned">Unassigned: {{getUnassigned(gameState['strategies'][name]['team'])}}</div>
+    <div v-for="(queue, label) in gameState['strategies'][name]['backlog']" :key="label" class="queue">
       <h4>{{label}} ({{queue.length}})</h4>
       <div v-for="card in queue" :key="card['id']">
         <CardView  v-bind:card="card" />
@@ -23,7 +23,6 @@ export default {
     CardView
   },
   props: [
-    'state',
     'board',
     'name'
   ],
@@ -40,14 +39,14 @@ export default {
     getTeam(strategy) {
       var team = []
       var i, j
-      if (this.state['strategies'][strategy]['team']) {
-        for (i = 0; i < this.state['strategies'][strategy]['team'].length; i++) {
-          team.push(this.state['strategies'][strategy]['team'][i])
+      if (this.gameState['strategies'][strategy]['team']) {
+        for (i = 0; i < this.gameState['strategies'][strategy]['team'].length; i++) {
+          team.push(this.gameState['strategies'][strategy]['team'][i])
         }
       }
-      if (this.state['strategies'][strategy]['backlog']) {
-        for (i = 0; i < this.state['strategies'][strategy]['backlog']['doing'].length; i++) {
-          var assigned = this.state['strategies'][strategy]['backlog']['doing'][i]['assigned']
+      if (this.gameState['strategies'][strategy]['backlog']) {
+        for (i = 0; i < this.gameState['strategies'][strategy]['backlog']['doing'].length; i++) {
+          var assigned = this.gameState['strategies'][strategy]['backlog']['doing'][i]['assigned']
           for (j = 0; j < assigned.length; j++) {
             team.push(assigned[j])
           }
@@ -70,11 +69,17 @@ export default {
       }
       return teamVals
     }
+  },
+  computed: {
+    gameState() {
+      return this.$store.getters.getGameState;
+    }
   }
 }
 </script>
 
 <style>
+  .board { display: inline-block; width: 24%; margin: 2px; vertical-align: top; }
   .aboard { border: 1px solid; }
   .aboard h3 { text-align: center; }
   .skills, .unassigned { text-align: left; margin: 0 6px 6px 6px; font-size: smaller; }

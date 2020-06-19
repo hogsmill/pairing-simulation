@@ -31,35 +31,46 @@ var generateCard = function(area, skills, levels, i, id) {
 
 var SetUp = {
 
-  createTeam: function(state, roleSkills) {
-    for (var i = 0; i < state['team'].length; i++) {
-      state['team'][i]['skills'] = roleSkills[state['team'][i]['skills']]
-    }
-    return state
+  setup: function(setUpState, gameState) {
+    this.setUpState = setUpState
+    this.gameState = gameState
+    this.createTeam()
+    this.createBacklog()
+    this.gameState.backlogCreated = true
+    this.gameState['sprint'] = 0
+
+    console.log(this.gameState)
+    return this.gameState
   },
 
-  createBacklog: function(state, skills, levels, numberOfCards, percentages) {
+  createTeam: function() {
+    var roleSkills = this.setUpState.roleSkills
+    for (var i = 0; i < this.gameState['team'].length; i++) {
+      var team = this.gameState['team'][i]
+      team['skills'] = roleSkills[team['skills']]
+    }
+  },
+
+  createBacklog: function() {
     var i, total = 0
     var cards = []
     var id = 1
-    var noOfCards = calculateNumberOfCards(numberOfCards, percentages)
+    var noOfCards = calculateNumberOfCards(this.setUpState.noOfCards, this.setUpState.percentages)
+    var skills = this.setUpState.skills
     for (var skill in skills) {
       i = 1
       while (i <= noOfCards[skill]) {
-        cards.push(generateCard(skill, skills, levels, i, id))
+        cards.push(generateCard(skill, skills, this.setUpState.levels, i, id))
         i = i + 1
         id = id + 1
         total = total + 1
       }
     }
-    state['noOfCards'] = total
-    for (var strategy in state['strategies']) {
-      //for (i = 0; i < cards.length; i++) {
-      //  state['strategies'][strategy]['backlog']['to do'].push(cards[i])
-      //}
-      state['strategies'][strategy]['backlog']['to do'] = JSON.parse(JSON.stringify(cards))
-      state['strategies'][strategy]['team'] = JSON.parse(JSON.stringify(state['team']))
-      state['strategies'][strategy]['noOfCards'] = numberOfCards
+    this.gameState.noOfCards = total
+    for (var strategy in this.gameState['strategies']) {
+      this.gameState['strategies'][strategy]['backlog']['to do'] = JSON.parse(JSON.stringify(cards))
+      this.gameState['strategies'][strategy]['team'] = JSON.parse(JSON.stringify(this.gameState['team']))
+      this.gameState['strategies'][strategy]['noOfCards'] = total
     }
   }
 }
