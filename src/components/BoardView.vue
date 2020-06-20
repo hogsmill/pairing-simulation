@@ -84,5 +84,4 @@ export default {
   .aboard h3 { text-align: center; }
   .skills, .unassigned { text-align: left; margin: 0 6px 6px 6px; font-size: smaller; }
   .queue { display: inline-block; width: 31%; margin: 2px; vertical-align: top; }
-  .card { border: 1px solid; margin: 0 0 2px 0; text-align: left; font-size: 60%; }
 </style>
