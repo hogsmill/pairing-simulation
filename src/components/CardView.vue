@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="task-card">
     Id: {{card['id']}}<br />
     <div class="progress-container">
       <div class="progress" :style="{ width: setWidth(card) }"></div>
@@ -31,6 +31,8 @@ export default {
 </script>
 
 <style>
-.progress-container { margin: 1px; height: 6px; background-color: #bbb; }
+.task-card { border: 1px solid #ccc; margin: 0 0 2px 0; text-align: left; font-size: 60%; background-color: #fff; }
+
+.progress-container { margin: 1px; height: 6px; background-color: #ddd; }
 .progress { width: 50%; background-color: green; height: 6px; }
 </style>

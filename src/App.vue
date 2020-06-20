@@ -6,49 +6,58 @@
       <AboutView />
     </div>
 
-    <div v-if="!showAbout">
+    <div class="container" v-if="!showAbout">
       <h1>Pairing Simulation</h1>
-      <div class="setup" v-if="!gameState.running">
-        <h2>Set Up</h2>
-        <div class="radio no-of-cards">
-          <label for="noOfCards">No. Of Cards </label>
-          <input type="text" id="noOfCards" name="noOfCards" v-model="setUpState.noOfCards">
-        </div>{{gameState.running}}
-        <button @click="setUp" :disabled="gameState.running" class="btn btn-site-primary">Create Team and Backlog</button>
+      <div class="card-deck">
+        <div class="card bg-light mb-3 col-md-3 no-padding-r-l setup" v-if="!gameState.running">
+          <div class="card-body">
+            <h3 class="card-title">Set Up</h3>
+            <div class="radio no-of-cards">
+              <label for="noOfCards">No. Of Cards </label>
+              <input type="text" id="noOfCards" name="noOfCards" class="form-control" v-model="setUpState.noOfCards">
+            </div>
+            <button @click="setUp" :disabled="gameState.running" class="btn btn-site-primary">Create Team and Backlog</button>
+          </div>
+        </div>
+        <div class="card bg-light mb-3 col-md-3 no-padding-r-l run-type" v-if="!(gameState.running && gameState.runType == 'Full Run')">
+          <div class="card-body">
+            <h3 class="card-title">Run Type</h3>
+            <div class="radio">
+              <input type="radio" id="fullRun" name="runType" v-model="gameState.runType" v-bind:value="'Full Run'">
+              <label for="fullRun">Full Run</label>
+            </div>
+            <div class="radio">
+              <input type="radio" id="stepThrough" name="runType" v-model="gameState.runType" v-bind:value="'Step Through'">
+              <label for="stepThrough">Step-Through</label>
+            </div>
+            <button @click="run()" class="btn btn-site-primary start" :disabled="gameState.running || ! gameState.backlogCreated">Go</button>
+          </div>
+        </div>
+        <div class="card bg-light mb-3 col-md-3 no-padding-r-l strategies" v-if="!gameState.running">
+          <div class="card-body">
+            <h3 class="card-title">Strategies</h3>
+            <div class="radio">
+              <input type="checkbox" id="noPairing" name="noPairing" v-model="gameState.strategies['no-pairing'].run">
+              <label for="noPairing">No Pairing</label>
+            </div>
+            <div class="radio">
+              <input type="checkbox" id="bestPair" name="bestPair" v-model="gameState.strategies['best-pair'].run">
+              <label for="bestPair">Best Pairing</label>
+            </div>
+            <div class="radio">
+              <input type="checkbox" id="bestShare" name="bestShare" v-model="gameState.strategies['best-share'].run">
+              <label for="randomShare">Best Share</label>
+            </div>
+            <div class="radio">
+              <input type="checkbox" id="randomShare" name="randomShare" v-model="gameState.strategies['random-share'].run">
+              <label for="randomShare">Random Share</label>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="run-type" v-if="!(gameState.running && gameState.runType == 'Full Run')">
-        <h2>Run Type</h2>
-        <div class="radio">
-          <input type="radio" id="fullRun" name="runType" v-model="gameState.runType" v-bind:value="'Full Run'">
-          <label for="fullRun">Full Run</label>
-        </div>
-        <div class="radio">
-          <input type="radio" id="stepThrough" name="runType" v-model="gameState.runType" v-bind:value="'Step Through'">
-          <label for="stepThrough">Step-Through</label>
-        </div>
-        <button @click="run()" class="btn btn-site-primary start" :disabled="gameState.running || ! gameState.backlogCreated">Go</button>
-      </div>
-      <div class="strategies" v-if="!gameState.running">
-        <h2>Strategies</h2>
-        <div class="radio">
-          <input type="checkbox" id="noPairing" name="noPairing" v-model="gameState.strategies['no-pairing'].run">
-          <label for="noPairing">No Pairing</label>
-        </div>
-        <div class="radio">
-          <input type="checkbox" id="bestPair" name="bestPair" v-model="gameState.strategies['best-pair'].run">
-          <label for="bestPair">Best Pairing</label>
-        </div>
-        <div class="radio">
-          <input type="checkbox" id="bestShare" name="bestShare" v-model="gameState.strategies['best-share'].run">
-          <label for="randomShare">Best Share</label>
-        </div>
-        <div class="radio">
-          <input type="checkbox" id="randomShare" name="randomShare" v-model="gameState.strategies['random-share'].run">
-          <label for="randomShare">Random Share</label>
-        </div>
-      </div>
-      <ResultsView v-bind:state="gameState" />
     </div>
+    <ResultsView v-bind:state="gameState" />
+
   </div>
 </template>
 
@@ -167,7 +176,6 @@ export default {
   .setup { width: 40%; display: inline-block; vertical-align: top; padding-right:24px; }
   .setup button { margin-bottom: 12px; }
   .no-of-cards { margin-bottom: 12px; }
-  .no-of-cards input { width: 30px; }
   .member { vertical-align: top; }
   .member .name { width: 20%; display: inline-block; vertical-align: top; text-align: right; padding: 2px; }
   .member .skills { width: 70%; display: inline-block; vertical-align: top; text-align: left; pDDING: 2PX;  }

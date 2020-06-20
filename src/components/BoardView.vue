@@ -1,5 +1,5 @@
 <template>
-  <div v-if="gameState['strategies'][name]['run']" class="aboard">
+  <div v-if="gameState['strategies'][name]['run']" class="aboard bg-light rounded">
     <h3>{{gameState['strategies'][name]['name']}}</h3>
     <div class="skills">
       <div v-for="(member, index) in getTeam(name)" :key="index">{{member}}</div>
@@ -80,7 +80,7 @@ export default {
 
 <style>
   .board { display: inline-block; width: 24%; margin: 2px; vertical-align: top; }
-  .aboard { border: 1px solid; }
+  .aboard { border: 1px solid #ccc; }
   .aboard h3 { text-align: center; }
   .skills, .unassigned { text-align: left; margin: 0 6px 6px 6px; font-size: smaller; }
   .queue { display: inline-block; width: 31%; margin: 2px; vertical-align: top; }

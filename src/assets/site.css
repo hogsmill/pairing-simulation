@@ -13,7 +13,6 @@ body {
 
 div {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  border: 0px solid #000;
 }
 
 button { margin: 2px; }
@@ -40,6 +39,15 @@ button { margin: 2px; }
   color: #f4511e !important;
   background-color: #fff !important;
   padding: 14px;
+}
+
+label {
+  margin: 0 .5rem;
+}
+
+.card {
+  border-color: #ddd;
+  font-size: 100%;
 }
 
 .game-name {

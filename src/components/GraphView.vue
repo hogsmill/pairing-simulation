@@ -32,6 +32,6 @@ export default {
 <style>
   .graph { vertical-align: top; height: 24px; }
   .graph .label { display: inline-block; width: 13%; text-align: right; padding-right: 2px; height: 20px; vertical-align: top; }
-  .graph .graph-container { display: inline-block; width: 80%; border: 1px solid; height: 20px;  }
+  .graph .graph-container { display: inline-block; width: 80%; border: 1px solid #ccc; height: 20px;  }
   .graph .status { height: 20px; background-color: green; color: white;  width: 0px }
 </style>
