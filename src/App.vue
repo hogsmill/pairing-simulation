@@ -46,9 +46,6 @@ export default {
     return {}
   },
   methods: {
-    updateShowAbout(state) {
-      this.$store.dispatch("updateShowAbout", state)
-    }
   },
   computed: {
     isHost() {
