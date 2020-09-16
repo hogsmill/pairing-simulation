@@ -1,7 +1,9 @@
 <template>
   <div class="card bg-light mb-3 col-md-3 no-padding-r-l strategies" v-if="!gameState.running">
     <div class="card-body">
-      <h3 class="card-title">Strategies</h3>
+      <h3 class="card-title">
+        Strategies
+      </h3>
       <div class="radio">
         <input type="checkbox" id="noPairing" name="noPairing" v-model="gameState.strategies['no-pairing'].run">
         <label for="noPairing">No Pairing</label>
@@ -24,12 +26,12 @@
 
 <script>
 export default {
-  methods: {
-  },
   computed: {
     gameState() {
-      return this.$store.getters.getGameState;
+      return this.$store.getters.getGameState
     }
+  },
+  methods: {
   }
 }
 </script>

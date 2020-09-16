@@ -1,13 +1,13 @@
 <template>
   <div class="task-card">
-    Id: {{card['id']}}<br />
+    Id: {{ card['id'] }}<br>
     <div class="progress-container">
-      <div class="progress" :style="{ width: setWidth(card) }"></div>
+      <div class="progress" :style="{ width: setWidth(card) }" />
     </div>
-    Needed: {{card['needed']}}<br />
-    Amount: {{card['amount']}}<br />
-    Left: {{card['remaining']}}<br />
-    Assigned: {{getAssigned(card)}}
+    Needed: {{ card['needed'] }}<br>
+    Amount: {{ card['amount'] }}<br>
+    Left: {{ card['remaining'] }}<br>
+    Assigned: {{ getAssigned(card) }}
   </div>
 </template>
 
@@ -20,8 +20,8 @@ export default {
       return 100 * card['completed'] / card['amount'] + '%'
     },
     getAssigned(card) {
-      var assigned = []
-      for (var i = 0; i < card['assigned'].length; i++) {
+      const assigned = []
+      for (let i = 0; i < card['assigned'].length; i++) {
         assigned.push(card['assigned'][i]['name'])
       }
       return assigned.join(', ')

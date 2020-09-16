@@ -1,20 +1,20 @@
-'use strict';
+'use strict'
 
-var getMemberSkill = function(member, skill) {
-  for (var i = 0; i < member.skills.length; i++) {
+function getMemberSkill(member, skill) {
+  for (let i = 0; i < member.skills.length; i++) {
     if (member.skills[i].name == skill) {
       return member.skills[i]
     }
   }
 }
 
-var findMostExpertOnCard = function(card) {
-  var expert
-  var level = 0
-  for (var i = 0; i < card.assigned.length; i++) {
-    var member = card.assigned[i]
-    for (var j = 0; j < member.skills.length; j++) {
-      var skill = member.skills[j]
+function findMostExpertOnCard(card) {
+  let expert
+  let level = 0
+  for (let i = 0; i < card.assigned.length; i++) {
+    const member = card.assigned[i]
+    for (let j = 0; j < member.skills.length; j++) {
+      const skill = member.skills[j]
       if (card.needed == skill.name) {
         if (!expert) {
           expert = member
@@ -29,24 +29,24 @@ var findMostExpertOnCard = function(card) {
   return expert
 }
 
-var addExpertLevel = function(card, expert, state) {
-  var expertSkill = getMemberSkill(expert, card.needed)
-  var shareLevel = Math.max(1, Math.round(expertSkill.level * state.expertLevelPercentage / 100))
-  for (var i = 0; i < card.assigned.length; i++) {
+function addExpertLevel(card, expert, state) {
+  const expertSkill = getMemberSkill(expert, card.needed)
+  const shareLevel = Math.max(1, Math.round(expertSkill.level * state.expertLevelPercentage / 100))
+  for (let i = 0; i < card.assigned.length; i++) {
     addShare(card.assigned[i], card.needed, shareLevel, state)
   }
 }
 
-var addDefaultLevel = function(card, state) {
-  for (var i = 0; i < card.assigned.length; i++) {
+function addDefaultLevel(card, state) {
+  for (let i = 0; i < card.assigned.length; i++) {
     addShare(card.assigned[i], card.needed, state.defaultLevel, state)
   }
 }
 
-var addShare = function(member, card_skill, level, state) {
-  var added
-  for (var i = 0; i < member.skills.length; i++) {
-    var skill = member.skills[i]
+function addShare(member, card_skill, level, state) {
+  let added
+  for (let i = 0; i < member.skills.length; i++) {
+    const skill = member.skills[i]
     if (skill.name == card_skill) {
       skill.level = Math.min(state.expertLevel, skill.level + level)
       added = true
@@ -57,13 +57,13 @@ var addShare = function(member, card_skill, level, state) {
   }
 }
 
-var addMemberKnowledge = function(card, state) {
+function addMemberKnowledge(card, state) {
   // Rules:
   //   1) If there is somebody on the card with the needed skill, everybody
   //      gets 10% of the skill level of the highest expert
   //   2) If there is nobody on the card with the skill, everybody gets 1
   //
-  var expert = findMostExpertOnCard(card)
+  const expert = findMostExpertOnCard(card)
   if (expert) {
     addExpertLevel(card, expert, state)
   } else {
@@ -71,11 +71,11 @@ var addMemberKnowledge = function(card, state) {
   }
 }
 
-var Knowledge = {
+const Knowledge = {
 
   calculateKnowledgeShare: function(state, strategy) {
-    var board = state.strategies[strategy]
-    for (var i = 0; i < board.backlog.doing.length; i++) {
+    const board = state.strategies[strategy]
+    for (let i = 0; i < board.backlog.doing.length; i++) {
       addMemberKnowledge(board.backlog.doing[i], state)
     }
     return state

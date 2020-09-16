@@ -1,11 +1,13 @@
 <template>
   <div class="graph">
-    <div class="label">{{gameState.strategies[name].name}}</div>
+    <div class="label">
+      {{ gameState.strategies[name].name }}
+    </div>
     <div class="graph-container">
       <div class="status" :style="{ width: setStatusWidth(backlog) }">
-      <span v-if="backlog['backlog']['done'].length == gameState['noOfCards']">({{backlog['sprints']}} Sprints)</span>
+        <span v-if="backlog['backlog']['done'].length == gameState['noOfCards']">({{ backlog['sprints'] }} Sprints)</span>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -16,14 +18,14 @@ export default {
     'name',
     'backlog'
   ],
+  computed: {
+    gameState() {
+      return this.$store.getters.getGameState
+    }
+  },
   methods: {
     setStatusWidth(backlog) {
       return parseInt(backlog.backlog.done.length / this.gameState.noOfCards * 100) + '%'
-    }
-  },
-  computed: {
-    gameState() {
-      return this.$store.getters.getGameState;
     }
   }
 }

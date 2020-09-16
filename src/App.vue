@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <appHeader></appHeader>
+    <appHeader />
 
     <div v-if="showAbout">
       <AboutView />
@@ -14,15 +14,14 @@
         <StrategiesView />
       </div>
     </div>
-    <ResultsView v-bind:state="gameState" />
-
+    <ResultsView :state="gameState" />
   </div>
 </template>
 
 <script>
-import io from "socket.io-client";
+import io from 'socket.io-client'
 
-import Header from "./components/Header.vue";
+import Header from './components/Header.vue'
 
 import AboutView from './components/about/AboutView.vue'
 
@@ -45,38 +44,38 @@ export default {
   data() {
     return {}
   },
-  methods: {
-  },
   computed: {
     isHost() {
-      return this.$store.getters.getHost;
+      return this.$store.getters.getHost
     },
     showAbout() {
-      return this.$store.getters.getShowAbout;
+      return this.$store.getters.getShowAbout
     },
     setUpState() {
-      return this.$store.getters.getSetUpState;
+      return this.$store.getters.getSetUpState
     },
     gameState() {
-      return this.$store.getters.getGameState;
+      return this.$store.getters.getGameState
     },
     sprint() {
-      return this.$store.getters.getSprint;
+      return this.$store.getters.getSprint
     }
   },
   created() {
-    var host = "77.68.122.69"
+    let host = '77.68.122.69'
       if (location.hostname == 'localhost') {
         host = 'localhost'
       }
-      var connStr = "http://" + host + ":3002"
-      console.log("Connecting to: " + connStr)
+      const connStr = 'http://' + host + ':3002'
+      console.log('Connecting to: ' + connStr)
       this.socket = io(connStr)
   },
   mounted() {
-    if (location.search == "?host") {
-      this.$store.dispatch("updateHost", true)
+    if (location.search == '?host') {
+      this.$store.dispatch('updateHost', true)
     }
+  },
+  methods: {
   }
 }
 </script>

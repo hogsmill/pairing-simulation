@@ -1,24 +1,24 @@
-'use strict';
+'use strict'
 
 
-var getRandomIndex = function(n) {
+const getRandomIndex = function(n) {
   return Math.floor(Math.random() * Math.floor(n))
 }
 
-var calculateNumberOfCards = function(noOfCards, percentages) {
-  var cards = {}
-  for (var key in percentages) {
+const calculateNumberOfCards = function(noOfCards, percentages) {
+  const cards = {}
+  for (const key in percentages) {
     cards[key] = parseInt(noOfCards * percentages[key] / 100)
   }
   return cards
 }
 
-var generateCard = function(area, skills, levels, i, id) {
-  var skill = getRandomIndex(skills[area].length - 1)
-  var level = getRandomIndex(levels.length - 1)
+const generateCard = function(area, skills, levels, i, id) {
+  const skill = getRandomIndex(skills[area].length - 1)
+  const level = getRandomIndex(levels.length - 1)
   return {
     'id': id,
-    'name': "Card " + i,
+    'name': 'Card ' + i,
     'needed': skills[area][skill],
     'amount': levels[level],
 
@@ -29,7 +29,7 @@ var generateCard = function(area, skills, levels, i, id) {
   }
 }
 
-var SetUp = {
+const SetUp = {
 
   setup: function(setUpState, gameState) {
     this.setUpState = setUpState
@@ -44,20 +44,20 @@ var SetUp = {
   },
 
   createTeam: function() {
-    var roleSkills = this.setUpState.roleSkills
-    for (var i = 0; i < this.gameState['team'].length; i++) {
-      var team = this.gameState['team'][i]
+    const roleSkills = this.setUpState.roleSkills
+    for (let i = 0; i < this.gameState['team'].length; i++) {
+      const team = this.gameState['team'][i]
       team['skills'] = roleSkills[team['skills']]
     }
   },
 
   createBacklog: function() {
-    var i, total = 0
-    var cards = []
-    var id = 1
-    var noOfCards = calculateNumberOfCards(this.setUpState.noOfCards, this.setUpState.percentages)
-    var skills = this.setUpState.skills
-    for (var skill in skills) {
+    let i, total = 0
+    const cards = []
+    let id = 1
+    const noOfCards = calculateNumberOfCards(this.setUpState.noOfCards, this.setUpState.percentages)
+    const skills = this.setUpState.skills
+    for (const skill in skills) {
       i = 1
       while (i <= noOfCards[skill]) {
         cards.push(generateCard(skill, skills, this.setUpState.levels, i, id))
@@ -67,7 +67,7 @@ var SetUp = {
       }
     }
     this.gameState.noOfCards = total
-    for (var strategy in this.gameState['strategies']) {
+    for (const strategy in this.gameState['strategies']) {
       this.gameState['strategies'][strategy]['backlog']['to do'] = JSON.parse(JSON.stringify(cards))
       this.gameState['strategies'][strategy]['team'] = JSON.parse(JSON.stringify(this.gameState['team']))
       this.gameState['strategies'][strategy]['noOfCards'] = total

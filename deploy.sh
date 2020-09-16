@@ -25,4 +25,4 @@ if [ -f "src/server.js" ]; then
   node src/server.js $PORT 'Pairing' &
 fi
 
-ps -ef | grep node
+ps -ef | grep node | sort -k10

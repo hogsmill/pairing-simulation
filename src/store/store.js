@@ -1,7 +1,7 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
@@ -59,56 +59,56 @@ export const store = new Vuex.Store({
   },
   getters: {
     getShowAbout: (state) => {
-      return state.showAbout;
+      return state.showAbout
     },
     getHost: (state) => {
-      return state.host;
+      return state.host
     },
     getSetUpState: (state) => {
       return state.setUpState
     },
     getGameState: (state) => {
-      return state.gameState;
+      return state.gameState
     },
     getRunning: (state) => {
-      return state.gameState.running;
+      return state.gameState.running
     },
     getSprint: (state) => {
-      return state.gameState.sprint;
+      return state.gameState.sprint
     },
   },
   mutations: {
     updateShowAbout: (state, payload) => {
-      state.showAbout = payload;
+      state.showAbout = payload
     },
     updateHost: (state, payload) => {
-      state.host = payload;
+      state.host = payload
     },
     updateGameState: (state, payload) => {
-      state.gameState = payload;
+      state.gameState = payload
     },
     updateRunning: (state, payload) => {
-      state.gameState.running = payload;
+      state.gameState.running = payload
     },
     updateSprint: (state, payload) => {
-      state.gameState.sprint = payload;
+      state.gameState.sprint = payload
     }
   },
   actions: {
     updateShowAbout: ({ commit }, payload) => {
-      commit("updateShowAbout", payload);
+      commit('updateShowAbout', payload)
     },
     updateHost: ({ commit }, payload) => {
-      commit("updateHost", payload);
+      commit('updateHost', payload)
     },
     updateGameState: ({ commit }, payload) => {
-      commit("updateGameState", payload);
+      commit('updateGameState', payload)
     },
     updateRunning: ({ commit }, payload) => {
-      commit("updateRunning", payload);
+      commit('updateRunning', payload)
     },
     updateSprint: ({ commit }, payload) => {
-      commit("updateSprint", payload);
+      commit('updateSprint', payload)
     }
   }
-});
+})

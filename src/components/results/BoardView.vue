@@ -1,14 +1,18 @@
 <template>
   <div v-if="gameState['strategies'][name]['run']" class="aboard bg-light rounded">
-    <h3>{{gameState['strategies'][name]['name']}}</h3>
+    <h3>{{ gameState['strategies'][name]['name'] }}</h3>
     <div class="skills">
-      <div v-for="(member, index) in getTeam(name)" :key="index">{{member}}</div>
+      <div v-for="(member, index) in getTeam(name)" :key="index">
+        {{ member }}
+      </div>
     </div>
-    <div class="unassigned">Unassigned: {{getUnassigned(gameState['strategies'][name]['team'])}}</div>
+    <div class="unassigned">
+      Unassigned: {{ getUnassigned(gameState['strategies'][name]['team']) }}
+    </div>
     <div v-for="(queue, label) in gameState['strategies'][name]['backlog']" :key="label" class="queue">
-      <h4>{{label}} ({{queue.length}})</h4>
+      <h4>{{ label }} ({{ queue.length }})</h4>
       <div v-for="card in queue" :key="card['id']">
-        <CardView  v-bind:card="card" />
+        <CardView :card="card" />
       </div>
     </div>
   </div>
@@ -26,19 +30,24 @@ export default {
     'board',
     'name'
   ],
+  computed: {
+    gameState() {
+      return this.$store.getters.getGameState
+    }
+  },
   methods: {
     getUnassigned(team) {
       if (team) {
-        var members = []
-        for (var i = 0; i < team.length; i++) {
+        const members = []
+        for (let i = 0; i < team.length; i++) {
           members.push(team[i]['name'])
         }
         return members.join(', ')
       }
     },
     getTeam(strategy) {
-      var team = []
-      var i, j
+      let team = []
+      let i, j
       if (this.gameState['strategies'][strategy]['team']) {
         for (i = 0; i < this.gameState['strategies'][strategy]['team'].length; i++) {
           team.push(this.gameState['strategies'][strategy]['team'][i])
@@ -46,7 +55,7 @@ export default {
       }
       if (this.gameState['strategies'][strategy]['backlog']) {
         for (i = 0; i < this.gameState['strategies'][strategy]['backlog']['doing'].length; i++) {
-          var assigned = this.gameState['strategies'][strategy]['backlog']['doing'][i]['assigned']
+          const assigned = this.gameState['strategies'][strategy]['backlog']['doing'][i]['assigned']
           for (j = 0; j < assigned.length; j++) {
             team.push(assigned[j])
           }
@@ -58,21 +67,16 @@ export default {
         if (a['name'] > b['name']) { return  1 }
         return 0
       })
-      var teamVals = []
+      const teamVals = []
       for (i = 0; i < team.length; i++) {
-        var skills = []
+        const skills = []
         for (j = 0; j < team[i]['skills'].length; j++) {
-          var skill = team[i]['skills'][j]
+          const skill = team[i]['skills'][j]
           skills.push(skill['name'] + ':' + skill['level'])
         }
         teamVals.push(team[i]['name'] + ': ' + skills.join(', '))
       }
       return teamVals
-    }
-  },
-  computed: {
-    gameState() {
-      return this.$store.getters.getGameState;
     }
   }
 }
