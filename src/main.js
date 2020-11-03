@@ -7,6 +7,8 @@ require('./assets/site.css')
 
 Vue.config.productionTip = false
 
+Vue.use(VModal)
+
 new Vue({
   render: h => h(App),
   store,
