@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    thisGame: 'Pairing Simulation',
     showAbout: false,
     host: false,
     setUpState: {
@@ -58,6 +59,9 @@ export const store = new Vuex.Store({
     }
   },
   getters: {
+    thisGame: (state) => {
+      return state.thisGame
+    },
     getShowAbout: (state) => {
       return state.showAbout
     },
