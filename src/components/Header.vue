@@ -23,6 +23,9 @@
         <li class="nav-item" :class="{ active: showAbout }">
           <a class="nav-link pointer" @click="updateShowAbout(true)">About</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link pointer" @click="show()">Feedback</a>
+        </li>
       </ul>
 
       <modal name="feedback" :height="420" :classes="['rounded', 'feedback']">
