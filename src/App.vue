@@ -62,13 +62,14 @@ export default {
     }
   },
   created() {
-    let host = '77.68.122.69'
-      if (location.hostname == 'localhost') {
-        host = 'localhost'
-      }
-      const connStr = 'http://' + host + ':3002'
-      console.log('Connecting to: ' + connStr)
-      this.socket = io(connStr)
+    let connStr
+    if (location.hostname == 'localhost') {
+      connStr = 'http://localhost:3002'
+    } else {
+      connStr = 'https://agilesimulations.co.uk:3002'
+    }
+    console.log('Connecting to: ' + connStr)
+    this.socket = io(connStr)
   },
   mounted() {
     if (location.search == '?host') {
