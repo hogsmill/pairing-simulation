@@ -7,7 +7,6 @@
     </div>
 
     <div class="container" v-if="!showAbout">
-      <h1>Pairing Simulation</h1>
       <div class="card-deck">
         <TeamAndBacklogView />
         <RunView />
