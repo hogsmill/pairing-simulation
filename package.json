@@ -10,7 +10,7 @@
   "dependencies": {
     "core-js": "^3.16.0",
     "death": "^1.1.0",
-    "highlight.js": "^11.1.0",
+    "highlight.js": "^11.2.0",
     "jquery": "^3.6.0",
     "socket.io": "^4.1.3",
     "socket.io-client": "^4.1.3",
