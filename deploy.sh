@@ -25,3 +25,6 @@ if [ -f "src/server.js" ]; then
     kill -9 $SERVER
   fi
 fi
+
+rm -rf node_modules/.cache
+rm -rf dist
