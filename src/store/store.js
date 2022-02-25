@@ -1,13 +1,14 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 
-Vue.use(Vuex)
+import { createStore } from 'vuex'
 
-export const store = new Vuex.Store({
+export const store = createStore({
   state: {
     thisGame: 'Pairing Simulation',
     showAbout: false,
     host: false,
+    modals: {
+      'feedback': false
+    },
     setUpState: {
       noOfCards: 100,
       percentages: {
@@ -68,6 +69,9 @@ export const store = new Vuex.Store({
     getHost: (state) => {
       return state.host
     },
+    getModals: (state) => {
+      return state.modals
+    },
     getSetUpState: (state) => {
       return state.setUpState
     },
@@ -88,6 +92,16 @@ export const store = new Vuex.Store({
     updateHost: (state, payload) => {
       state.host = payload
     },
+    showModal: (state, payload) => {
+      const modals = Object.keys(state.modals)
+      for (let i = 0; i < modals.length; i++) {
+        state.modals[modals[i]] = false
+      }
+      state.modals[payload] = true
+    },
+    hideModal: (state, payload) => {
+      state.modals[payload] = false
+    },
     updateGameState: (state, payload) => {
       state.gameState = payload
     },
@@ -104,6 +118,12 @@ export const store = new Vuex.Store({
     },
     updateHost: ({ commit }, payload) => {
       commit('updateHost', payload)
+    },
+    showModal: ({ commit }, payload) => {
+      commit('showModal', payload)
+    },
+    hideModal: ({ commit }, payload) => {
+      commit('hideModal', payload)
     },
     updateGameState: ({ commit }, payload) => {
       commit('updateGameState', payload)

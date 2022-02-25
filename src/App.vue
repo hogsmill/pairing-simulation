@@ -14,6 +14,7 @@
       </div>
     </div>
     <ResultsView :state="gameState" />
+    <Modals />
   </div>
 </template>
 
@@ -21,6 +22,7 @@
 import io from 'socket.io-client'
 
 import Header from './components/Header.vue'
+import Modals from './components/Modals.vue'
 
 import AboutView from './components/about/AboutView.vue'
 
@@ -34,6 +36,7 @@ export default {
   name: 'App',
   components: {
     appHeader: Header,
+    Modals,
     AboutView,
     TeamAndBacklogView,
     RunView,

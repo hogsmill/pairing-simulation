@@ -4,8 +4,9 @@
     <div v-for="(backlog, name) in gameState['strategies']" :key="'graph-' + name" :class="{ hidden: !visible(name) }">
       <GraphView :name="name" :backlog="backlog" />
     </div>
-    <div v-for="(backlog, name) in gameState.strategies" :key="'board-' + name" class="board"
-         :class="{ hidden: !visible(name) }" :style="{ width: setWidth() }"
+    <div
+      v-for="(backlog, name) in gameState.strategies" :key="'board-' + name" class="board"
+      :class="{ hidden: !visible(name) }" :style="{ width: setWidth() }"
     >
       <BoardView :board="backlog" :name="name" />
     </div>
